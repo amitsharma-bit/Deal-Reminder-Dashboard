@@ -76,17 +76,17 @@ body{
   background: var(--bg);
   color: var(--text);
   font-family: var(--font);
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.45;
   -webkit-font-smoothing: antialiased;
   transition: background .2s ease, color .2s ease;
 }
-.wrap{ max-width: 1180px; margin: 0 auto; padding: 0 16px 90px; }
+.wrap{ max-width: 1920px; margin: 0 auto; padding: 0 24px 90px; }
 svg{ display:block; }
 
 /* ===== Static brand bar ===== */
 .brand-bar{
-  display:flex; align-items:center; padding: 14px 16px; max-width:1180px; margin:0 auto;
+  display:flex; align-items:center; padding: 12px 24px; max-width:1920px; margin:0 auto;
   border-bottom: 1px solid var(--line);
 }
 .brand-bar-left{ display:flex; align-items:center; gap:10px; }
@@ -123,7 +123,7 @@ svg{ display:block; }
 .header-meta{ text-align:right; flex-shrink:0; }
 .header-meta-top{ font-size:13px; color: var(--text-dim); }
 .header-meta-top b{ color: var(--text); }
-.header-meta-bottom{ font-family: var(--font-mono); font-size: 11.5px; color: var(--text-faint); margin-top:5px; }
+.header-meta-bottom{ font-family: var(--font); font-size: 11.5px; color: var(--text-faint); margin-top:5px; }
 
 /* ===== Widgets (stats) ===== */
 .stats{ display:grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 18px; }
@@ -140,30 +140,20 @@ svg{ display:block; }
 }
 .stat-icon svg{ width:14px; height:14px; }
 .stat .lbl{ color: var(--text-faint); font-size: 10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; padding-right:30px; }
-.stat .num{ font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top:8px; }
+.stat .num{ font-family: var(--font); font-size: 26px; font-weight: 700; margin-top:8px; letter-spacing:-0.01em; }
 .stat .cap{ color: var(--text-dim); font-size: 11.5px; margin-top: 4px; }
 
-/* ===== Quick date-range presets ===== */
-.quick-ranges{ display:flex; gap:6px; align-items:center; margin-bottom: 12px; flex-wrap:wrap; }
-.quick-btn{
-  font-family: var(--font); font-size: 13px; font-weight:600; color: var(--text-dim);
-  background:transparent; border:none; padding:7px 10px; border-radius: var(--radius-sm); cursor:pointer;
-  transition: background .15s, color .15s;
-}
-.quick-btn:hover{ background: var(--card-2); }
-.quick-btn.active{ background: var(--blue); color:#fff; }
-
-/* ===== Search + Filters ===== */
-.toolbar{ display:flex; gap:10px; align-items:center; margin-bottom: 12px; }
+/* ===== Filter row (search + all dropdowns in a single line) ===== */
+.toolbar{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom: 14px; }
 .search-bar{
-  flex:1; min-width:120px; display:flex; align-items:center; gap:8px;
+  flex:1 1 220px; min-width:160px; display:flex; align-items:center; gap:8px;
   background: var(--card); border:1px solid var(--line); border-radius: var(--radius-sm);
-  padding: 9px 12px;
+  padding: 7px 12px; height:36px;
 }
 .search-bar svg{ width:15px; height:15px; color: var(--text-faint); flex-shrink:0; }
 .search-bar input{
   flex:1; border:none; outline:none; background:transparent; color: var(--text);
-  font-size:15px; font-family: var(--font); min-width:0;
+  font-size:14px; font-family: var(--font); min-width:0;
 }
 .search-clear{
   display:none; border:none; background: var(--text-faint); color: var(--card); width:18px; height:18px;
@@ -171,8 +161,8 @@ svg{ display:block; }
 }
 .search-bar.has-value .search-clear{ display:block; }
 .btn{
-  font-family: var(--font); font-size: 14px; font-weight: 600;
-  padding: 9px 14px; border-radius: var(--radius-sm); border: 1px solid var(--line);
+  font-family: var(--font); font-size: 13.5px; font-weight: 600;
+  padding: 0 14px; height:36px; border-radius: var(--radius-sm); border: 1px solid var(--line);
   background: var(--card); color: var(--text); cursor:pointer;
   display:flex; align-items:center; gap:7px; transition: border-color .15s, transform .1s;
   white-space: nowrap;
@@ -183,11 +173,7 @@ svg{ display:block; }
 .btn.primary:hover{ opacity:.9; }
 .btn:disabled{ opacity:.5; cursor:not-allowed; }
 .btn svg{ width:14px; height:14px; }
-.filters-btn{ display:none; }
 
-/* ===== Segmented stage pills ===== */
-.segmented-wrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; margin-bottom: 14px; scrollbar-width:none; }
-.segmented-wrap::-webkit-scrollbar{ display:none; }
 .segmented{ display:inline-flex; gap:4px; background: var(--card); border-radius:12px; padding:4px; border:1px solid var(--line); }
 .seg-pill{
   font-family:var(--font); font-size:13px; font-weight:600; padding:7px 14px; border-radius:9px;
@@ -196,21 +182,15 @@ svg{ display:block; }
 }
 .seg-pill.active{ background: var(--blue); color:#fff; }
 
-/* ===== Filters panel (inline on desktop, bottom sheet on mobile) ===== */
-.filters-scrim{ display:none; }
-.filters-panel{
-  display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom: 14px;
-}
-.filters-panel .sheet-handle, .filters-done{ display:none; }
 select{
   background: var(--card); border:1px solid var(--line); border-radius: var(--radius-sm); color: var(--text);
-  padding: 9px 10px; font-size:14px; font-family: var(--font); cursor:pointer;
+  padding: 0 10px; height:36px; font-size:13.5px; font-family: var(--font); cursor:pointer;
 }
 select:focus{ outline:none; border-color: var(--blue); }
 .date-range{ display:flex; align-items:center; gap:6px; }
 .date-range input[type="date"]{
   background: var(--card); border:1px solid var(--line); border-radius: var(--radius-sm); color: var(--text);
-  padding: 8px 10px; font-size:13px; font-family: var(--font); cursor:pointer;
+  padding: 0 10px; height:36px; font-size:13px; font-family: var(--font); cursor:pointer;
 }
 .date-range input[type="date"]:focus{ outline:none; border-color: var(--blue); }
 .date-range span{ color: var(--text-faint); font-size:12px; }
@@ -266,13 +246,13 @@ tbody td{ padding: 12px 14px; vertical-align: middle; font-size: 13.5px; }
   display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:700;
   font-family: var(--font);
 }
-.amount{ font-family: var(--font-mono); font-size: 13px; }
-.date-cell{ font-family: var(--font-mono); font-size: 12.5px; color: var(--text-dim); }
+.amount{ font-family: var(--font); font-size: 13.5px; font-weight:600; }
+.date-cell{ font-family: var(--font); font-size: 13px; color: var(--text-dim); }
 
 .gauge-wrap{ display:flex; align-items:center; gap:8px; min-width: 120px; }
 .gauge{ flex:1; height: 6px; background: var(--card-2); border-radius: 4px; overflow:hidden; }
 .gauge-fill{ height:100%; border-radius: 4px; }
-.gauge-num{ font-family: var(--font-mono); font-size: 12px; font-weight:600; width: 40px; text-align:right; }
+.gauge-num{ font-family: var(--font); font-size: 12.5px; font-weight:700; width: 40px; text-align:right; }
 
 .remind-btn{
   font-size: 12.5px; font-weight: 600; padding: 7px 12px; border-radius: 999px;
@@ -374,26 +354,10 @@ tbody td{ padding: 12px 14px; vertical-align: middle; font-size: 13.5px; }
 
 @media (max-width: 720px){
   .stats{ grid-template-columns: repeat(2,1fr); }
-  .filters-btn{ display:flex; }
   .table-wrap{ display:none; }
   .card-list{ display:flex; }
-  .filters-scrim{
-    display:block; position:fixed; inset:0; background: rgba(0,0,0,.35); z-index:65;
-    opacity:0; pointer-events:none; transition: opacity .3s ease;
-  }
-  .filters-scrim.show{ opacity:1; pointer-events:auto; }
-  .filters-panel{
-    position:fixed; left:0; right:0; bottom:0; z-index:70; flex-direction:column; align-items:stretch;
-    background: var(--sheet-bg); backdrop-filter: var(--material); -webkit-backdrop-filter: var(--material);
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 0 20px 24px; margin-bottom:0;
-    transform: translateY(110%); transition: transform .3s cubic-bezier(.36,.66,.04,1);
-    box-shadow: 0 -10px 40px rgba(0,0,0,.25);
-  }
-  .filters-panel.open{ transform: translateY(0); }
-  .filters-panel .sheet-handle{ display:block; }
-  .filters-panel select, .filters-panel .date-range{ width:100%; }
-  .filters-panel select{ width:100%; }
-  .filters-done{ display:block; margin-top:8px; }
+  .toolbar select, .toolbar .date-range{ width:100%; }
+  .date-range{ flex:1 1 100%; }
   .map-row{ flex-direction:column; align-items:flex-start; gap:6px; }
   .map-row input{ width:100%; }
 }
@@ -470,41 +434,21 @@ tbody td{ padding: 12px 14px; vertical-align: middle; font-size: 13.5px; }
     </div>
   </div>
 
-  <div class="quick-ranges" id="quickRanges">
-    <button class="quick-btn" data-range="today">Today</button>
-    <button class="quick-btn" data-range="yesterday">Yesterday</button>
-    <button class="quick-btn" data-range="last3">Last 3 days</button>
-    <button class="quick-btn" data-range="week">This week</button>
-    <button class="quick-btn" data-range="lastweek">Last week</button>
-    <button class="quick-btn" data-range="month">This month</button>
-  </div>
-
   <div class="toolbar">
     <div class="search-bar">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input type="text" id="searchInput" placeholder="Search deal name, owner, team…">
       <button class="search-clear" id="searchClear" type="button" aria-label="Clear search">&times;</button>
     </div>
-    <button class="btn filters-btn" id="filtersBtn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2" fill="currentColor" stroke="none"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2" fill="currentColor" stroke="none"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2" fill="currentColor" stroke="none"/></svg>
-      Filters
-    </button>
-    <button class="btn" id="csvExportBtn" title="Export the currently filtered deals as CSV">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 21h16"/></svg>
-      CSV
-    </button>
-  </div>
-
-  <div class="filters-scrim" id="filtersScrim"></div>
-  <div class="filters-panel" id="filtersPanel">
-    <div class="sheet-handle"></div>
+    <select id="stageFilter">
+      <option value="">All Stages</option>
+    </select>
     <select id="teamFilter"><option value="">All teams</option></select>
     <select id="ownerFilter"><option value="">All owners</option></select>
     <div class="date-range">
       <input type="date" id="dateFrom" title="Expected close from">
       <span>&ndash;</span>
       <input type="date" id="dateTo" title="Expected close to">
-      <button class="btn" id="dateGoBtn" type="button">Go</button>
     </div>
     <select id="sortSelect">
       <option value="daysOver_desc">Most overdue first</option>
@@ -514,13 +458,7 @@ tbody td{ padding: 12px 14px; vertical-align: middle; font-size: 13.5px; }
       <option value="name_asc">Deal name (A&ndash;Z)</option>
       <option value="name_desc">Deal name (Z&ndash;A)</option>
     </select>
-    <button class="btn primary filters-done" id="filtersDone">Done</button>
   </div>
-
-  <div class="segmented-wrap">
-    <div class="segmented" id="stageSegmented"></div>
-  </div>
-  <select id="stageFilter" hidden><option value="">All stages</option></select>
 
   <div class="table-wrap">
     <table>
@@ -743,33 +681,6 @@ function uniqueOwnersFromDeals(){
   return [...map.values()].sort((a,b) => a.name.localeCompare(b.name));
 }
 
-// Segmented pill control mirrors the hidden #stageFilter <select> so getFiltered()
-// keeps reading from a single source of truth regardless of which control changed it.
-function buildStagePills(){
-  const wrap = document.getElementById('stageSegmented');
-  wrap.innerHTML = '';
-  const makePill = (label, value) => {
-    const b = document.createElement('button');
-    b.className = 'seg-pill';
-    b.textContent = label;
-    b.dataset.value = value;
-    b.addEventListener('click', () => {
-      document.getElementById('stageFilter').value = value;
-      updateStagePillsActive();
-      renderTable();
-    });
-    return b;
-  };
-  wrap.appendChild(makePill('All Stages', ''));
-  STAGE_ORDER.forEach(s => wrap.appendChild(makePill(s, s)));
-  updateStagePillsActive();
-}
-function updateStagePillsActive(){
-  const val = document.getElementById('stageFilter').value;
-  document.querySelectorAll('#stageSegmented .seg-pill').forEach(b => {
-    b.classList.toggle('active', b.dataset.value === val);
-  });
-}
 
 function getFiltered(){
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
@@ -905,7 +816,7 @@ function renderCardList(list){
         <div class="deal-card-mid" style="display:flex; align-items:center; gap:7px;">${avatarHtml(d.owner)}<span>${escapeHtml(d.owner)} &middot; ${escapeHtml(d.team)}</span></div>
         <div class="deal-card-bottom">
           <span class="amount">${fmtMoney(d.amount)}</span>
-          <span style="color:${color}; font-family:var(--font-mono); font-weight:600;">${d.daysOver}d overdue</span>
+          <span style="color:${color}; font-weight:700;">${d.daysOver}d overdue</span>
         </div>
       </div>
     `;
@@ -991,10 +902,10 @@ document.getElementById('statTotalCard').addEventListener('click', () => {
   document.getElementById('searchInput').closest('.search-bar').classList.remove('has-value');
   document.getElementById('stageFilter').value = '';
   document.getElementById('teamFilter').value = '';
+  document.getElementById('ownerFilter').value = '';
   document.getElementById('dateFrom').value = '';
   document.getElementById('dateTo').value = '';
   quickFilter = null;
-  updateStagePillsActive();
   renderStats();
   renderTable();
 });
@@ -1018,17 +929,6 @@ document.getElementById('searchClear').addEventListener('click', () => {
   renderTable();
   searchInputEl.focus();
 });
-
-// ============================================================
-// FILTERS PANEL (inline on desktop, bottom sheet on mobile)
-// ============================================================
-const filtersPanelEl = document.getElementById('filtersPanel');
-const filtersScrimEl = document.getElementById('filtersScrim');
-function openFilters(){ filtersPanelEl.classList.add('open'); filtersScrimEl.classList.add('show'); }
-function closeFilters(){ filtersPanelEl.classList.remove('open'); filtersScrimEl.classList.remove('show'); }
-document.getElementById('filtersBtn').addEventListener('click', openFilters);
-filtersScrimEl.addEventListener('click', closeFilters);
-document.getElementById('filtersDone').addEventListener('click', closeFilters);
 
 // ============================================================
 // SETTINGS MODAL
@@ -1219,7 +1119,6 @@ document.getElementById('selectAll').addEventListener('change', e => {
 });
 ['searchInput'].forEach(id => document.getElementById(id).addEventListener('input', renderTable));
 ['stageFilter','teamFilter','ownerFilter','dateFrom','dateTo','sortSelect'].forEach(id => document.getElementById(id).addEventListener('change', renderTable));
-document.getElementById('dateGoBtn').addEventListener('click', () => { renderTable(); closeFilters(); });
 
 // ============================================================
 // SORTABLE COLUMN HEADERS — mirror the #sortSelect dropdown so both stay in sync
@@ -1235,68 +1134,9 @@ document.querySelectorAll('th.sortable').forEach(th => {
   });
 });
 
-// ============================================================
-// QUICK DATE-RANGE PRESETS — applied to the "expected close" date filter
-// ============================================================
-function isoDate(d){ return d.toISOString().slice(0,10); }
-function startOfWeek(d){
-  const copy = new Date(d);
-  const day = (copy.getDay() + 6) % 7; // Monday = 0
-  copy.setDate(copy.getDate() - day);
-  return copy;
-}
-document.querySelectorAll('.quick-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const today = new Date();
-    let from, to;
-    switch(btn.dataset.range){
-      case 'today': from = to = today; break;
-      case 'yesterday': from = to = new Date(today.getTime() - 86400000); break;
-      case 'last3': from = new Date(today.getTime() - 2*86400000); to = today; break;
-      case 'week': from = startOfWeek(today); to = today; break;
-      case 'lastweek': {
-        const thisWeekStart = startOfWeek(today);
-        to = new Date(thisWeekStart.getTime() - 86400000);
-        from = startOfWeek(to);
-        break;
-      }
-      case 'month': from = new Date(today.getFullYear(), today.getMonth(), 1); to = today; break;
-      default: from = to = null;
-    }
-    document.getElementById('dateFrom').value = from ? isoDate(from) : '';
-    document.getElementById('dateTo').value = to ? isoDate(to) : '';
-    document.querySelectorAll('.quick-btn').forEach(b => b.classList.toggle('active', b === btn));
-    renderTable();
-  });
-});
-
-// ============================================================
-// CSV EXPORT — of the currently filtered/sorted list
-// ============================================================
-function csvCell(v){
-  const s = String(v ?? '');
-  return /[",\n]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s;
-}
-document.getElementById('csvExportBtn').addEventListener('click', () => {
-  const list = getFiltered();
-  const header = ['Deal','Deal ID','Stage','Owner','Team','ARR (Sales)','Expected Close','Days Overdue'];
-  const rows = list.map(d => [d.name, d.id, d.stage, d.owner, d.team, d.amount, d.expected, d.daysOver]);
-  const csv = [header, ...rows].map(r => r.map(csvCell).join(',')).join('\r\n');
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'overdue-deals-' + isoDate(new Date()) + '.csv';
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-});
-
 (async function init(){
   initTheme();
   populateFilters();
-  buildStagePills();
   loadConfig();
   renderAll();
   await Promise.all([loadOwners(), refreshFromHubspot()]);
