@@ -2,6 +2,17 @@ const SLACK_TOKEN = process.env.SLACK_TOKEN;
 const BASE = 'https://slack.com/api';
 const SLACK_ID_RE = /^[UW][A-Z0-9]{6,}$/;
 
+// Incoming webhook URLs, one per channel: {"team_sales_pod_archit": "https://hooks.slack.com/...", ...}
+// Each webhook posts to exactly the channel it was created for — no bot token needed,
+// but it also can't DM users, so owner reminders still go through the bot token below.
+function webhookMap() {
+  try {
+    return JSON.parse(process.env.SLACK_WEBHOOKS || '{}');
+  } catch (e) {
+    return {};
+  }
+}
+
 function assertToken() {
   if (!SLACK_TOKEN) throw new Error('SLACK_TOKEN is not configured');
 }
@@ -39,6 +50,19 @@ async function resolveUserId(handle) {
 }
 
 async function postToChannel(channel, text) {
+  const clean = channel.trim().replace(/^#/, '');
+  const webhookUrl = webhookMap()[clean];
+
+  if (webhookUrl) {
+    const r = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text }),
+    });
+    if (!r.ok) throw new Error(`Slack webhook for #${clean} failed: ${r.status} ${(await r.text()).slice(0, 200)}`);
+    return { ok: true };
+  }
+
   const target = channel.startsWith('#') || SLACK_ID_RE.test(channel) ? channel : `#${channel}`;
   return call('chat.postMessage', { channel: target, text });
 }
