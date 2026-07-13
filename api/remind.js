@@ -1,5 +1,7 @@
 const { postToChannel, postDm } = require('./_lib/slack');
 
+const HUBSPOT_PORTAL_ID = '242626590';
+
 function formatDate(iso) {
   if (!iso) return '—';
   const d = new Date(iso + 'T00:00:00');
@@ -15,6 +17,28 @@ function buildReminderText(deal) {
     `*Deal Owner:* ${deal.owner}`,
     `*Deal Stage:* ${deal.stage}`,
   ].join('\n');
+}
+
+function buildReminderPayload(deal) {
+  const text = buildReminderText(deal);
+  const dealUrl = `https://app.hubspot.com/contacts/${HUBSPOT_PORTAL_ID}/record/0-3/${deal.id}`;
+  return {
+    text,
+    blocks: [
+      { type: 'section', text: { type: 'mrkdwn', text } },
+      {
+        type: 'actions',
+        elements: [
+          {
+            type: 'button',
+            text: { type: 'plain_text', text: 'View deal in HubSpot', emoji: true },
+            url: dealUrl,
+            action_id: 'view_deal_in_hubspot',
+          },
+        ],
+      },
+    ],
+  };
 }
 
 module.exports = async function handler(req, res) {
@@ -33,14 +57,14 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  const text = buildReminderText(deal);
+  const payload = buildReminderPayload(deal);
 
   const errors = [];
   if (ownerHandle) {
-    try { await postDm(ownerHandle, text); } catch (e) { errors.push(e.message); }
+    try { await postDm(ownerHandle, payload); } catch (e) { errors.push(e.message); }
   }
   if (channel) {
-    try { await postToChannel(channel, text); } catch (e) { errors.push(e.message); }
+    try { await postToChannel(channel, payload); } catch (e) { errors.push(e.message); }
   }
 
   if (errors.length) {

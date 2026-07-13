@@ -49,7 +49,9 @@ async function resolveUserId(handle) {
   throw new Error(`Could not resolve Slack user "${handle}"`);
 }
 
-async function postToChannel(channel, text) {
+// payload is {text, blocks?} — text is the plain-text fallback/notification string,
+// blocks is optional Block Kit content (e.g. to render a "View in HubSpot" link button).
+async function postToChannel(channel, payload) {
   const clean = channel.trim().replace(/^#/, '');
   const webhookUrl = webhookMap()[clean];
 
@@ -57,19 +59,19 @@ async function postToChannel(channel, text) {
     const r = await fetch(webhookUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text }),
+      body: JSON.stringify(payload),
     });
     if (!r.ok) throw new Error(`Slack webhook for #${clean} failed: ${r.status} ${(await r.text()).slice(0, 200)}`);
     return { ok: true };
   }
 
   const target = channel.startsWith('#') || SLACK_ID_RE.test(channel) ? channel : `#${channel}`;
-  return call('chat.postMessage', { channel: target, text });
+  return call('chat.postMessage', { channel: target, ...payload });
 }
 
-async function postDm(handle, text) {
+async function postDm(handle, payload) {
   const userId = await resolveUserId(handle);
-  return call('chat.postMessage', { channel: userId, text });
+  return call('chat.postMessage', { channel: userId, ...payload });
 }
 
 module.exports = { postToChannel, postDm };

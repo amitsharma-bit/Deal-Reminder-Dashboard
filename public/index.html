@@ -102,6 +102,15 @@ select{
 }
 select:focus{ outline:none; border-color: var(--teal); }
 
+.date-range{ display:flex; align-items:center; gap:6px; }
+.date-range input[type="date"]{
+  background: var(--panel); border:1px solid var(--line); border-radius:8px; color: var(--text);
+  padding: 8px 10px; font-size:12.5px; font-family: var(--font-display); cursor:pointer;
+  color-scheme: dark;
+}
+.date-range input[type="date"]:focus{ outline:none; border-color: var(--teal); }
+.date-range span{ color: var(--text-faint); font-size:12px; }
+
 .bulk-bar{
   display:none; align-items:center; justify-content:space-between; gap:10px;
   background: var(--teal-dim); border: 1px solid #3ec6c655; border-radius: 10px;
@@ -238,17 +247,22 @@ tbody td{ padding: 11px 14px; vertical-align: middle; font-size: 13px; }
     <div class="stat"><div class="num" id="statTotal">0</div><div class="lbl">Overdue deals</div></div>
     <div class="stat crit"><div class="num" id="statCrit">0</div><div class="lbl">45+ days overdue</div></div>
     <div class="stat warn"><div class="num" id="statWarn">0</div><div class="lbl">1&ndash;44 days overdue</div></div>
-    <div class="stat ok"><div class="num" id="statValue">$0</div><div class="lbl">Total value at risk</div></div>
+    <div class="stat ok"><div class="num" id="statValue">$0</div><div class="lbl">Total ARR (Sales) at risk</div></div>
   </div>
 
   <div class="toolbar">
     <div class="search"><i class="fa fa-solid fa-magnifying-glass"></i><input type="text" id="searchInput" placeholder="Search deal name, owner, team…"></div>
     <select id="stageFilter"><option value="">All stages</option></select>
     <select id="teamFilter"><option value="">All teams</option></select>
+    <div class="date-range">
+      <input type="date" id="dateFrom" title="Expected close from">
+      <span>–</span>
+      <input type="date" id="dateTo" title="Expected close to">
+    </div>
     <select id="sortSelect">
       <option value="daysOver_desc">Most overdue first</option>
       <option value="daysOver_asc">Least overdue first</option>
-      <option value="amount_desc">Highest value first</option>
+      <option value="amount_desc">Highest ARR (Sales) first</option>
       <option value="name_asc">Deal name (A–Z)</option>
     </select>
   </div>
@@ -266,7 +280,7 @@ tbody td{ padding: 11px 14px; vertical-align: middle; font-size: 13px; }
           <th>Deal</th>
           <th>Stage</th>
           <th>Owner</th>
-          <th>Value</th>
+          <th>ARR (Sales)</th>
           <th>Expected close</th>
           <th>Overdue by</th>
           <th></th>
@@ -397,11 +411,15 @@ function getFiltered(){
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
   const stage = document.getElementById('stageFilter').value;
   const team = document.getElementById('teamFilter').value;
+  const dateFrom = document.getElementById('dateFrom').value;
+  const dateTo = document.getElementById('dateTo').value;
   const sort = document.getElementById('sortSelect').value;
 
   let list = deals.filter(d => {
     if(stage && d.stage !== stage) return false;
     if(team && d.team !== team) return false;
+    if(dateFrom && (!d.expected || d.expected < dateFrom)) return false;
+    if(dateTo && (!d.expected || d.expected > dateTo)) return false;
     if(q && !(d.name.toLowerCase().includes(q) || d.owner.toLowerCase().includes(q) || d.team.toLowerCase().includes(q))) return false;
     return true;
   });
@@ -463,7 +481,7 @@ function renderTable(){
       </td>
       <td>
         <button class="remind-btn" data-id="${d.id}">
-          <i class="fa fa-solid fa-paper-plane"></i> Remind
+          <i class="fa fa-solid fa-bell"></i> Remind
         </button>
       </td>
     `;
@@ -697,7 +715,7 @@ document.getElementById('selectAll').addEventListener('change', e => {
   renderTable();
 });
 ['searchInput'].forEach(id => document.getElementById(id).addEventListener('input', renderTable));
-['stageFilter','teamFilter','sortSelect'].forEach(id => document.getElementById(id).addEventListener('change', renderTable));
+['stageFilter','teamFilter','dateFrom','dateTo','sortSelect'].forEach(id => document.getElementById(id).addEventListener('change', renderTable));
 
 (async function init(){
   populateFilters();
