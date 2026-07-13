@@ -1,5 +1,22 @@
 const { postToChannel, postDm } = require('./_lib/slack');
 
+function formatDate(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso + 'T00:00:00');
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function buildReminderText(deal) {
+  return [
+    `*Deal Owner:* ${deal.owner}`,
+    `Your expected contract closure date is outdated (${formatDate(deal.expected)}) and the deal is still In-Pipeline. Kindly update it.`,
+    '',
+    `*Deal Name:* ${deal.name}`,
+    `*Deal Owner:* ${deal.owner}`,
+    `*Deal Stage:* ${deal.stage}`,
+  ].join('\n');
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
@@ -16,8 +33,7 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  const amount = Number(deal.amount) || 0;
-  const text = `⏰ Deal reminder: The deal "${deal.name}" (HubSpot ID ${deal.id}, $${amount.toLocaleString()}) is in the "${deal.stage}" stage with an Expected Contract Closure Date of ${deal.expected}, which is ${deal.daysOver} day(s) in the past. Owner: ${deal.owner}. Please review and update the close date or move the deal forward.`;
+  const text = buildReminderText(deal);
 
   const errors = [];
   if (ownerHandle) {
