@@ -1,0 +1,6 @@
+{
+  "name": "deal-reminder-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dashboard for overdue HubSpot deals with one-click Slack reminders."
+}
