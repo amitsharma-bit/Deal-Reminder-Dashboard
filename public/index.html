@@ -13,8 +13,8 @@
   --text: #000000;
   --text-dim: rgba(60,60,67,.6);
   --text-faint: rgba(60,60,67,.3);
-  --blue: #007AFF;
-  --blue-dim: rgba(0,122,255,.12);
+  --blue: #6D5EF5;
+  --blue-dim: rgba(109,94,245,.12);
   --green: #34C759;
   --green-dim: rgba(52,199,89,.12);
   --red: #FF3B30;
@@ -39,8 +39,8 @@
     --text: #FFFFFF;
     --text-dim: rgba(235,235,245,.6);
     --text-faint: rgba(235,235,245,.3);
-    --blue: #0A84FF;
-    --blue-dim: rgba(10,132,255,.18);
+    --blue: #8B7CFF;
+    --blue-dim: rgba(139,124,255,.18);
     --green: #30D158;
     --green-dim: rgba(48,209,88,.18);
     --red: #FF453A;
@@ -84,61 +84,74 @@ body{
 .wrap{ max-width: 1180px; margin: 0 auto; padding: 0 16px 90px; }
 svg{ display:block; }
 
-/* ===== Sticky compact nav bar ===== */
-.navbar{
-  position: sticky; top:0; z-index:40; height:52px;
-  display:flex; align-items:center; padding: 0 12px;
-  background: transparent; border-bottom: 1px solid transparent;
-  transition: background .2s ease, border-color .2s ease;
+/* ===== Static brand bar ===== */
+.brand-bar{
+  display:flex; align-items:center; padding: 14px 16px; max-width:1180px; margin:0 auto;
+  border-bottom: 1px solid var(--line);
 }
-.navbar.scrolled{
-  background: var(--sheet-bg); backdrop-filter: var(--material); -webkit-backdrop-filter: var(--material);
-  border-bottom-color: var(--line);
+.brand-bar-left{ display:flex; align-items:center; gap:10px; }
+.brand-logo{
+  width:30px; height:30px; border-radius:9px; background: var(--blue); color:#fff;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
 }
-.navbar-title{
-  position:absolute; left:50%; transform:translateX(-50%);
-  font-weight:700; font-size:16px; opacity:0; transition: opacity .2s ease;
-  max-width: 60%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
-}
-.navbar.scrolled .navbar-title{ opacity:1; }
+.brand-logo svg{ width:16px; height:16px; }
+.brand-name{ font-weight:700; font-size:15px; }
 .navbar-actions{ margin-left:auto; display:flex; gap:8px; }
 .icon-btn{
-  width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center;
-  background: var(--card); border:1px solid var(--line); color: var(--text); cursor:pointer;
+  width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center;
+  background: var(--card); border:1px solid var(--line); color: var(--text-dim); cursor:pointer;
   transition: transform .12s ease, background .15s; flex-shrink:0;
 }
+.icon-btn:hover{ color: var(--text); border-color: var(--text-faint); }
 .icon-btn:active{ transform: scale(.9); }
 .icon-btn:disabled{ opacity:.5; }
 .icon-btn.spinning svg{ animation: spin .8s linear infinite; }
 
-/* ===== Large title ===== */
-.large-title-block{ padding: 10px 4px 18px; }
-.large-title-block h1{
-  font-size: 32px; font-weight: 800; letter-spacing: -0.02em;
-  display:flex; align-items:center; gap: 10px;
+/* ===== Header block ===== */
+.header-block{
+  display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
+  padding: 20px 4px 18px; flex-wrap:wrap;
 }
-.large-title-block h1 .dot{
-  width:9px; height:9px; border-radius:50%; background: var(--blue);
-  box-shadow: 0 0 0 4px var(--blue-dim);
-  animation: pulse 2.2s ease-in-out infinite; flex-shrink:0;
+.header-block-left{ display:flex; align-items:flex-start; gap:14px; }
+.header-icon{
+  width:40px; height:40px; border-radius:11px; background: var(--blue-dim); color: var(--blue);
+  display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px;
 }
-@keyframes pulse{ 0%,100%{opacity:1} 50%{opacity:.4} }
-.large-title-block p{ color: var(--text-dim); font-size: 14px; margin-top: 5px; }
-.large-title-block .synced{ font-family: var(--font-mono); font-size: 11.5px; color: var(--text-faint); margin-top:7px; }
+.header-icon svg{ width:20px; height:20px; }
+.header-block h1{ font-size: 25px; font-weight: 800; letter-spacing: -0.01em; }
+.header-block p{ color: var(--text-dim); font-size: 13.5px; margin-top: 4px; max-width:520px; }
+.header-meta{ text-align:right; flex-shrink:0; }
+.header-meta-top{ font-size:13px; color: var(--text-dim); }
+.header-meta-top b{ color: var(--text); }
+.header-meta-bottom{ font-family: var(--font-mono); font-size: 11.5px; color: var(--text-faint); margin-top:5px; }
 
 /* ===== Widgets (stats) ===== */
 .stats{ display:grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 18px; }
 .stat{
-  background: var(--card); border-radius: var(--radius-md); box-shadow: var(--card-shadow);
+  position:relative; background: var(--card); border-radius: var(--radius-md); box-shadow: var(--card-shadow);
   border: 1px solid var(--line); padding: 14px; cursor:pointer;
   transition: transform .12s ease, box-shadow .15s ease;
 }
 .stat:active{ transform: scale(.96); }
 .stat.active{ box-shadow: 0 0 0 2px var(--blue) inset; }
-.stat-icon{ width:28px; height:28px; border-radius:9px; display:flex; align-items:center; justify-content:center; margin-bottom:10px; }
-.stat-icon svg{ width:15px; height:15px; }
-.stat .num{ font-family: var(--font-mono); font-size: 22px; font-weight: 700; }
-.stat .lbl{ color: var(--text-dim); font-size: 11.5px; margin-top: 3px; }
+.stat-icon{
+  position:absolute; top:14px; right:14px;
+  width:26px; height:26px; border-radius:8px; display:flex; align-items:center; justify-content:center;
+}
+.stat-icon svg{ width:14px; height:14px; }
+.stat .lbl{ color: var(--text-faint); font-size: 10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; padding-right:30px; }
+.stat .num{ font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top:8px; }
+.stat .cap{ color: var(--text-dim); font-size: 11.5px; margin-top: 4px; }
+
+/* ===== Quick date-range presets ===== */
+.quick-ranges{ display:flex; gap:6px; align-items:center; margin-bottom: 12px; flex-wrap:wrap; }
+.quick-btn{
+  font-family: var(--font); font-size: 13px; font-weight:600; color: var(--text-dim);
+  background:transparent; border:none; padding:7px 10px; border-radius: var(--radius-sm); cursor:pointer;
+  transition: background .15s, color .15s;
+}
+.quick-btn:hover{ background: var(--card-2); }
+.quick-btn.active{ background: var(--blue); color:#fff; }
 
 /* ===== Search + Filters ===== */
 .toolbar{ display:flex; gap:10px; align-items:center; margin-bottom: 12px; }
@@ -223,6 +236,11 @@ thead th{
   color: var(--text-faint); padding: 11px 14px; border-bottom: 1px solid var(--line);
   font-weight: 600; background: var(--card-2);
 }
+th.sortable{ cursor:pointer; user-select:none; display:table-cell; }
+th.sortable .th-inner{ display:inline-flex; align-items:center; gap:4px; }
+th.sortable svg{ width:10px; height:10px; opacity:.5; }
+th.sortable.active{ color: var(--blue); }
+th.sortable.active svg{ opacity:1; }
 tbody tr{ border-bottom: 1px solid var(--line); transition: background .1s; }
 tbody tr:last-child{ border-bottom:none; }
 tbody tr:hover{ background: var(--card-2); }
@@ -241,8 +259,13 @@ tbody td{ padding: 12px 14px; vertical-align: middle; font-size: 13.5px; }
 .badge.stage-In{ background: rgba(175,82,222,.14); color: #AF52DE; }
 .badge.stage-Contract{ background: var(--orange-dim); color: var(--orange); }
 .badge.stage-Future{ background: rgba(142,142,147,.16); color: #8E8E93; }
-.owner-cell{ display:flex; flex-direction:column; }
+.owner-cell{ display:flex; align-items:center; gap:9px; }
 .owner-cell .team{ font-size: 11px; color: var(--text-faint); }
+.avatar{
+  width:26px; height:26px; border-radius:50%; flex-shrink:0; color:#fff;
+  display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:700;
+  font-family: var(--font);
+}
 .amount{ font-family: var(--font-mono); font-size: 13px; }
 .date-cell{ font-family: var(--font-mono); font-size: 12.5px; color: var(--text-dim); }
 
@@ -378,8 +401,13 @@ tbody td{ padding: 12px 14px; vertical-align: middle; font-size: 13.5px; }
 </head>
 <body>
 
-<div class="navbar" id="navbar">
-  <span class="navbar-title" id="navbarTitle">Deal Reminder</span>
+<div class="brand-bar">
+  <div class="brand-bar-left">
+    <div class="brand-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    </div>
+    <span class="brand-name">Deal Reminder Dashboard</span>
+  </div>
   <div class="navbar-actions">
     <button class="icon-btn" id="refreshBtn" aria-label="Refresh from HubSpot" title="Refresh from HubSpot">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M21 12a9 9 0 1 1-2.6-6.36"/><path d="M21 4v5h-5"/></svg>
@@ -391,41 +419,64 @@ tbody td{ padding: 12px 14px; vertical-align: middle; font-size: 13.5px; }
 </div>
 
 <div class="wrap">
-  <div class="large-title-block">
-    <h1><span class="dot"></span> Deal Reminder Dashboard</h1>
-    <p>Deals past their expected contract closure date, still sitting in an active pipeline stage.</p>
-    <div class="synced" id="syncedLabel">Loaded from last HubSpot pull</div>
+  <div class="header-block">
+    <div class="header-block-left">
+      <div class="header-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+      </div>
+      <div>
+        <h1>Deal Reminder Dashboard</h1>
+        <p>Deals past their expected contract closure date, still sitting in an active pipeline stage.</p>
+      </div>
+    </div>
+    <div class="header-meta">
+      <div class="header-meta-top">Refreshed <b id="syncedTime">&mdash;</b></div>
+      <div class="header-meta-bottom" id="syncedLabel">Loaded from last HubSpot pull</div>
+    </div>
   </div>
 
   <div class="stats">
     <div class="stat" id="statTotalCard" title="Clear all filters">
+      <div class="lbl">Overdue deals</div>
       <div class="stat-icon" style="background:var(--blue-dim); color:var(--blue);">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       </div>
       <div class="num" id="statTotal">0</div>
-      <div class="lbl">Overdue deals</div>
+      <div class="cap" id="statTotalCap">&nbsp;</div>
     </div>
     <div class="stat" id="statCritCard" title="Tap to filter 45+ days overdue">
+      <div class="lbl">45+ days overdue</div>
       <div class="stat-icon" style="background:var(--red-dim); color:var(--red);">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12" y2="17"/></svg>
       </div>
       <div class="num" id="statCrit">0</div>
-      <div class="lbl">45+ days overdue</div>
+      <div class="cap" id="statCritCap">&nbsp;</div>
     </div>
     <div class="stat">
+      <div class="lbl">1&ndash;44 days overdue</div>
       <div class="stat-icon" style="background:var(--orange-dim); color:var(--orange);">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
       </div>
       <div class="num" id="statWarn">0</div>
-      <div class="lbl">1&ndash;44 days overdue</div>
+      <div class="cap" id="statWarnCap">&nbsp;</div>
     </div>
     <div class="stat">
+      <div class="lbl">Total ARR (Sales) at risk</div>
       <div class="stat-icon" style="background:var(--green-dim); color:var(--green);">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
       </div>
       <div class="num" id="statValue">$0</div>
-      <div class="lbl">Total ARR (Sales) at risk</div>
+      <div class="cap" id="statValueCap">&nbsp;</div>
     </div>
+  </div>
+
+  <div class="quick-ranges" id="quickRanges">
+    <button class="quick-btn" data-range="today">Today</button>
+    <button class="quick-btn" data-range="yesterday">Yesterday</button>
+    <button class="quick-btn" data-range="last3">Last 3 days</button>
+    <button class="quick-btn" data-range="week">This week</button>
+    <button class="quick-btn" data-range="lastweek">Last week</button>
+    <button class="quick-btn" data-range="month">This month</button>
   </div>
 
   <div class="toolbar">
@@ -438,22 +489,30 @@ tbody td{ padding: 12px 14px; vertical-align: middle; font-size: 13.5px; }
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2" fill="currentColor" stroke="none"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2" fill="currentColor" stroke="none"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2" fill="currentColor" stroke="none"/></svg>
       Filters
     </button>
+    <button class="btn" id="csvExportBtn" title="Export the currently filtered deals as CSV">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 21h16"/></svg>
+      CSV
+    </button>
   </div>
 
   <div class="filters-scrim" id="filtersScrim"></div>
   <div class="filters-panel" id="filtersPanel">
     <div class="sheet-handle"></div>
     <select id="teamFilter"><option value="">All teams</option></select>
+    <select id="ownerFilter"><option value="">All owners</option></select>
     <div class="date-range">
       <input type="date" id="dateFrom" title="Expected close from">
       <span>&ndash;</span>
       <input type="date" id="dateTo" title="Expected close to">
+      <button class="btn" id="dateGoBtn" type="button">Go</button>
     </div>
     <select id="sortSelect">
       <option value="daysOver_desc">Most overdue first</option>
       <option value="daysOver_asc">Least overdue first</option>
       <option value="amount_desc">Highest ARR (Sales) first</option>
+      <option value="amount_asc">Lowest ARR (Sales) first</option>
       <option value="name_asc">Deal name (A&ndash;Z)</option>
+      <option value="name_desc">Deal name (Z&ndash;A)</option>
     </select>
     <button class="btn primary filters-done" id="filtersDone">Done</button>
   </div>
@@ -468,12 +527,12 @@ tbody td{ padding: 12px 14px; vertical-align: middle; font-size: 13.5px; }
       <thead>
         <tr>
           <th class="chk"><input type="checkbox" id="selectAll"></th>
-          <th>Deal</th>
+          <th class="sortable" data-sort-asc="name_asc" data-sort-desc="name_desc"><span class="th-inner">Deal <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span></th>
           <th>Stage</th>
           <th>Owner</th>
-          <th>ARR (Sales)</th>
+          <th class="sortable" data-sort-asc="amount_asc" data-sort-desc="amount_desc"><span class="th-inner">ARR (Sales) <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span></th>
           <th>Expected close</th>
-          <th>Overdue by</th>
+          <th class="sortable active" data-sort-asc="daysOver_asc" data-sort-desc="daysOver_desc"><span class="th-inner">Overdue by <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span></th>
           <th></th>
         </tr>
       </thead>
@@ -646,6 +705,21 @@ function fmtDate(iso){
   return d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
 }
 
+const AVATAR_PALETTE = ['#6D5EF5','#30B0C7','#FF9500','#34C759','#FF3B30','#AF52DE','#5856D6','#00A3A3'];
+function initialsOf(name){
+  const parts = (name||'').trim().split(/\s+/).filter(Boolean);
+  if(!parts.length) return '?';
+  return (parts[0][0] + (parts.length>1 ? parts[parts.length-1][0] : '')).toUpperCase();
+}
+function colorForString(s){
+  let hash = 0;
+  for(let i=0; i<(s||'').length; i++) hash = (hash * 31 + s.charCodeAt(i)) >>> 0;
+  return AVATAR_PALETTE[hash % AVATAR_PALETTE.length];
+}
+function avatarHtml(name){
+  return `<span class="avatar" style="background:${colorForString(name)};">${initialsOf(name)}</span>`;
+}
+
 function populateFilters(){
   const stageSel = document.getElementById('stageFilter');
   stageSel.innerHTML = '<option value="">All stages</option>';
@@ -655,6 +729,18 @@ function populateFilters(){
   teamSel.innerHTML = '<option value="">All teams</option>';
   TEAMS.forEach(t => { const o=document.createElement('option'); o.value=t; o.textContent=t; teamSel.appendChild(o); });
   if(TEAMS.includes(prevTeam)) teamSel.value = prevTeam;
+
+  const ownerSel = document.getElementById('ownerFilter');
+  const prevOwner = ownerSel.value;
+  const ownerList = OWNERS.length ? OWNERS : uniqueOwnersFromDeals();
+  ownerSel.innerHTML = '<option value="">All owners</option>';
+  ownerList.forEach(o => { const opt=document.createElement('option'); opt.value=o.id; opt.textContent=o.name; ownerSel.appendChild(opt); });
+  if([...ownerSel.options].some(o => o.value === prevOwner)) ownerSel.value = prevOwner;
+}
+function uniqueOwnersFromDeals(){
+  const map = new Map();
+  deals.forEach(d => { if(d.ownerId != null && !map.has(d.ownerId)) map.set(d.ownerId, { id:d.ownerId, name:d.owner }); });
+  return [...map.values()].sort((a,b) => a.name.localeCompare(b.name));
 }
 
 // Segmented pill control mirrors the hidden #stageFilter <select> so getFiltered()
@@ -689,6 +775,7 @@ function getFiltered(){
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
   const stage = document.getElementById('stageFilter').value;
   const team = document.getElementById('teamFilter').value;
+  const owner = document.getElementById('ownerFilter').value;
   const dateFrom = document.getElementById('dateFrom').value;
   const dateTo = document.getElementById('dateTo').value;
   const sort = document.getElementById('sortSelect').value;
@@ -696,6 +783,7 @@ function getFiltered(){
   let list = deals.filter(d => {
     if(stage && d.stage !== stage) return false;
     if(team && d.team !== team) return false;
+    if(owner && String(d.ownerId) !== owner) return false;
     if(dateFrom && (!d.expected || d.expected < dateFrom)) return false;
     if(dateTo && (!d.expected || d.expected > dateTo)) return false;
     if(quickFilter === 'critical' && (d.daysOver||0) < 45) return false;
@@ -707,7 +795,9 @@ function getFiltered(){
     if(sort === 'daysOver_desc') return (b.daysOver||0) - (a.daysOver||0);
     if(sort === 'daysOver_asc') return (a.daysOver||0) - (b.daysOver||0);
     if(sort === 'amount_desc') return (b.amount||0) - (a.amount||0);
+    if(sort === 'amount_asc') return (a.amount||0) - (b.amount||0);
     if(sort === 'name_asc') return a.name.localeCompare(b.name);
+    if(sort === 'name_desc') return b.name.localeCompare(a.name);
     return 0;
   });
   return list;
@@ -723,6 +813,11 @@ function renderStats(){
   document.getElementById('statWarn').textContent = warn;
   document.getElementById('statValue').textContent = fmtMoney(value);
   document.getElementById('statCritCard').classList.toggle('active', quickFilter === 'critical');
+
+  document.getElementById('statTotalCap').textContent = total ? `${crit} critical · ${warn} warning` : ' ';
+  document.getElementById('statCritCap').textContent = total ? `${Math.round(crit/total*100)}% of total` : ' ';
+  document.getElementById('statWarnCap').textContent = total ? `${Math.round(warn/total*100)}% of total` : ' ';
+  document.getElementById('statValueCap').textContent = total ? `avg ${fmtMoney(value/total)}/deal` : ' ';
 }
 
 function renderTable(){
@@ -747,8 +842,11 @@ function renderTable(){
       <td><span class="badge ${stageClass(d.stage)}">${d.stage}</span></td>
       <td>
         <div class="owner-cell">
-          <div>${escapeHtml(d.owner)}</div>
-          <div class="team">${escapeHtml(d.team)}</div>
+          ${avatarHtml(d.owner)}
+          <div>
+            <div>${escapeHtml(d.owner)}</div>
+            <div class="team">${escapeHtml(d.team)}</div>
+          </div>
         </div>
       </td>
       <td class="amount">${fmtMoney(d.amount)}</td>
@@ -804,7 +902,7 @@ function renderCardList(list){
           </div>
           <span class="badge ${stageClass(d.stage)}">${d.stage}</span>
         </div>
-        <div class="deal-card-mid">${escapeHtml(d.owner)} &middot; ${escapeHtml(d.team)}</div>
+        <div class="deal-card-mid" style="display:flex; align-items:center; gap:7px;">${avatarHtml(d.owner)}<span>${escapeHtml(d.owner)} &middot; ${escapeHtml(d.team)}</span></div>
         <div class="deal-card-bottom">
           <span class="amount">${fmtMoney(d.amount)}</span>
           <span style="color:${color}; font-family:var(--font-mono); font-weight:600;">${d.daysOver}d overdue</span>
@@ -931,14 +1029,6 @@ function closeFilters(){ filtersPanelEl.classList.remove('open'); filtersScrimEl
 document.getElementById('filtersBtn').addEventListener('click', openFilters);
 filtersScrimEl.addEventListener('click', closeFilters);
 document.getElementById('filtersDone').addEventListener('click', closeFilters);
-
-// ============================================================
-// STICKY NAV BAR (large-title collapse on scroll)
-// ============================================================
-const navbarEl = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  navbarEl.classList.toggle('scrolled', window.scrollY > 70);
-}, { passive: true });
 
 // ============================================================
 // SETTINGS MODAL
@@ -1087,8 +1177,9 @@ async function refreshFromHubspot(){
     if(!res.ok) throw new Error(data.error || ('Request failed (' + res.status + ')'));
 
     deals = data.items || [];
-    document.getElementById('syncedLabel').textContent =
-      "Live pull from HubSpot · " + new Date(data.syncedAt).toLocaleString() + " · " + deals.length + " deals";
+    document.getElementById('syncedTime').textContent = new Date(data.syncedAt).toLocaleString('en-US', { month:'short', day:'2-digit', hour:'2-digit', minute:'2-digit' });
+    document.getElementById('syncedLabel').textContent = "Live pull from HubSpot · " + deals.length + " overdue deals";
+    populateFilters();
     renderAll();
     return true;
   }catch(err){
@@ -1127,7 +1218,80 @@ document.getElementById('selectAll').addEventListener('change', e => {
   renderTable();
 });
 ['searchInput'].forEach(id => document.getElementById(id).addEventListener('input', renderTable));
-['stageFilter','teamFilter','dateFrom','dateTo','sortSelect'].forEach(id => document.getElementById(id).addEventListener('change', renderTable));
+['stageFilter','teamFilter','ownerFilter','dateFrom','dateTo','sortSelect'].forEach(id => document.getElementById(id).addEventListener('change', renderTable));
+document.getElementById('dateGoBtn').addEventListener('click', () => { renderTable(); closeFilters(); });
+
+// ============================================================
+// SORTABLE COLUMN HEADERS — mirror the #sortSelect dropdown so both stay in sync
+// ============================================================
+document.querySelectorAll('th.sortable').forEach(th => {
+  th.addEventListener('click', () => {
+    const sortSel = document.getElementById('sortSelect');
+    const goingDesc = th.dataset.sortDesc && sortSel.value !== th.dataset.sortDesc;
+    sortSel.value = goingDesc ? th.dataset.sortDesc : th.dataset.sortAsc;
+    document.querySelectorAll('th.sortable').forEach(t => t.classList.remove('active'));
+    th.classList.add('active');
+    renderTable();
+  });
+});
+
+// ============================================================
+// QUICK DATE-RANGE PRESETS — applied to the "expected close" date filter
+// ============================================================
+function isoDate(d){ return d.toISOString().slice(0,10); }
+function startOfWeek(d){
+  const copy = new Date(d);
+  const day = (copy.getDay() + 6) % 7; // Monday = 0
+  copy.setDate(copy.getDate() - day);
+  return copy;
+}
+document.querySelectorAll('.quick-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const today = new Date();
+    let from, to;
+    switch(btn.dataset.range){
+      case 'today': from = to = today; break;
+      case 'yesterday': from = to = new Date(today.getTime() - 86400000); break;
+      case 'last3': from = new Date(today.getTime() - 2*86400000); to = today; break;
+      case 'week': from = startOfWeek(today); to = today; break;
+      case 'lastweek': {
+        const thisWeekStart = startOfWeek(today);
+        to = new Date(thisWeekStart.getTime() - 86400000);
+        from = startOfWeek(to);
+        break;
+      }
+      case 'month': from = new Date(today.getFullYear(), today.getMonth(), 1); to = today; break;
+      default: from = to = null;
+    }
+    document.getElementById('dateFrom').value = from ? isoDate(from) : '';
+    document.getElementById('dateTo').value = to ? isoDate(to) : '';
+    document.querySelectorAll('.quick-btn').forEach(b => b.classList.toggle('active', b === btn));
+    renderTable();
+  });
+});
+
+// ============================================================
+// CSV EXPORT — of the currently filtered/sorted list
+// ============================================================
+function csvCell(v){
+  const s = String(v ?? '');
+  return /[",\n]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s;
+}
+document.getElementById('csvExportBtn').addEventListener('click', () => {
+  const list = getFiltered();
+  const header = ['Deal','Deal ID','Stage','Owner','Team','ARR (Sales)','Expected Close','Days Overdue'];
+  const rows = list.map(d => [d.name, d.id, d.stage, d.owner, d.team, d.amount, d.expected, d.daysOver]);
+  const csv = [header, ...rows].map(r => r.map(csvCell).join(',')).join('\r\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'overdue-deals-' + isoDate(new Date()) + '.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+});
 
 (async function init(){
   initTheme();
