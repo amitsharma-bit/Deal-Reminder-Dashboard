@@ -5,8 +5,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## What this is
 
 A small Vercel app: a static HTML/CSS/JS dashboard (`public/index.html`) backed by
-three serverless functions (`api/*.js`) that lists overdue HubSpot deals and sends
-Slack reminders. No frontend framework, no bundler, no test suite.
+four serverless functions (`api/*.js`). Two views: overdue HubSpot deals with Slack
+reminders, and an "In pipeline" view mirroring a saved HubSpot report. No frontend framework, no bundler, no test suite.
 
 ## Running / developing
 
@@ -60,6 +60,13 @@ all global state and direct DOM manipulation):
   (`loadConfig`/`saveConfig`). `loadConfig` back-fills any missing team from
   `DEFAULT_CHANNELS`. This is per-browser; there's no shared backend store, so
   mapping set on one machine won't show up on another.
+- Two views toggled by `setView()` (`#viewSwitch`, persisted in the URL hash and
+  `localStorage` `active_view`): `#viewOverdue` (everything above) and
+  `#viewPipeline`. The pipeline view has its own `pl*`-prefixed state/elements
+  (`pipelineDeals`, `plFiltered`, `renderPipeline`, `refreshPipeline`); both
+  datasets load on init, and the navbar refresh button refreshes the active view.
+  Product and rooftop-activity filters are applied client-side (`plScoped`);
+  "since Sep 1, 2026" is the report's own filter, compared in US/Eastern.
 - `sendReminder(dealId, btn)` POSTs the whole deal object to `/api/remind`; bulk
   send just calls it sequentially with a 400 ms gap. `renderTable`/`getFiltered`/
   `renderStats` handle search/filter/sort/rendering off the `deals` array.
@@ -79,6 +86,17 @@ global `fetch` — no dependencies):
   Slack's `users.list` lookup) stop after 10 pages.
 - `api/deals.js` — calls both `hubspot.js` functions, merges owner name/team onto
   each deal, computes `daysOver` server-side, returns `{items, total, syncedAt}`.
+- `api/pipeline.js` — mirrors HubSpot report 508004491 ("Deal Report - Convo").
+  `searchPipelineDeals()` applies the report's deal-level filters (closure_chances
+  80–100%/100%, the same `STAGE_IDS`, two excluded owner IDs), then
+  `fetchDealCompanyIds` (v4 batch associations) + `fetchCompanies` (batch read)
+  nest each deal's companies as `rooftops`. Company reads need
+  `crm.objects.companies.read`; if they fail, the endpoint still returns deals with
+  `rooftopsError` set and the UI shows a notice. `sales_owner` is an enumeration of
+  owner IDs, labelled via the property's options (falls back to the owners map).
+  Multi-select values are `;`-joined and some carry a leading U+2060, stripped by
+  `splitMulti`. ARR (`arr__sales_`) is per deal — the HubSpot report repeats it on
+  every rooftop row, so its column totals overcount.
 - `api/owners.js` — returns the full owner list (`{id, name, team}`), sorted by
   team then name, for the Slack-mapping modal.
 - `api/_lib/slack.js` — `postToChannel(channel, payload)` and
