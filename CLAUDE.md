@@ -62,11 +62,16 @@ all global state and direct DOM manipulation):
   mapping set on one machine won't show up on another.
 - Two views toggled by `setView()` (`#viewSwitch`, persisted in the URL hash and
   `localStorage` `active_view`): `#viewOverdue` (everything above) and
-  `#viewPipeline`. The pipeline view has its own `pl*`-prefixed state/elements
-  (`pipelineDeals`, `plFiltered`, `renderPipeline`, `refreshPipeline`); both
-  datasets load on init, and the navbar refresh button refreshes the active view.
-  Product and rooftop-activity filters are applied client-side (`plScoped`);
-  "since Sep 1, 2026" is the report's own filter, compared in US/Eastern.
+  `#viewPipeline`. The pipeline view renders two HubSpot reports (`PIPELINE_REPORTS`:
+  Convo 508004491, Studio 507769150) as flat tables whose columns, order and
+  labels come from `REPORT_COLUMNS` — keep that in sync with the reports'
+  `visual.encodings.columns` if they change. `reportRows(key)` expands each deal
+  into one row per company and applies the per-report product filter and the
+  per-row `rooftop_last_activity` > 2026-09-01 (US/Eastern) filter, matching how
+  HubSpot applies a joined-company filter. Empty cells show `(No value)`, dates
+  MM/DD/YYYY; the totals row sums per row like HubSpot (so ARR repeats per
+  rooftop), while the ARR widget counts each deal once. Both datasets load on
+  init; the navbar refresh button refreshes the active view.
 - `sendReminder(dealId, btn)` POSTs the whole deal object to `/api/remind`; bulk
   send just calls it sequentially with a 400 ms gap. `renderTable`/`getFiltered`/
   `renderStats` handle search/filter/sort/rendering off the `deals` array.
@@ -86,8 +91,8 @@ global `fetch` — no dependencies):
   Slack's `users.list` lookup) stop after 10 pages.
 - `api/deals.js` — calls both `hubspot.js` functions, merges owner name/team onto
   each deal, computes `daysOver` server-side, returns `{items, total, syncedAt}`.
-- `api/pipeline.js` — mirrors HubSpot report 508004491 ("Deal Report - Convo").
-  `searchPipelineDeals()` applies the report's deal-level filters (closure_chances
+- `api/pipeline.js` — data for both pipeline reports (all products; the browser
+  splits Convo/Studio). `searchPipelineDeals()` applies the reports' shared deal-level filters (closure_chances
   80–100%/100%, the same `STAGE_IDS`, two excluded owner IDs), then
   `fetchDealCompanyIds` (v4 batch associations) + `fetchCompanies` (batch read)
   nest each deal's companies as `rooftops`. Company reads need

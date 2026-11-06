@@ -18,13 +18,13 @@ https://deal-reminder-dashboard.vercel.app
 - Bulk select + send for multiple deals at once.
 - "Refresh from HubSpot" re-pulls the live overdue list (also runs automatically
   on page load).
-- **In pipeline** tab: mirrors the HubSpot report
+- **In pipeline** tab: live copies of two HubSpot reports,
   [Deal Report – Convo](https://app-na2.hubspot.com/advanced-builder/242626590/report/508004491)
-  — deals at 80–100% closure chance in the same four stages, one row per deal with
-  its rooftops (associated companies: DMS, IMS, CRM, service scheduler, last
-  activity) expandable underneath. Product (Convo / Studio / All) and rooftop
-  last-activity filters default to the report's settings; CSV export produces the
-  report's deal × rooftop row shape.
+  and [Deal Report – Studio](https://app-na2.hubspot.com/advanced-builder/242626590/report/507769150),
+  with the same 25 columns in the same order, the same filters (closure chances
+  80–100%/100%, the four Auto Pipeline stages, two excluded owners, product
+  Convo/Studio, rooftop last activity after 09/01/2026 ET), one row per deal ×
+  rooftop, sorted by rooftop last activity, with a totals row and CSV export.
 - Owner → Slack handle and Team → Slack channel mappings are configured once via
   the **Slack mapping** panel and persisted in the browser (`localStorage`).
 
