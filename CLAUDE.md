@@ -30,13 +30,16 @@ and exercising the UI, or by calling the API routes directly (e.g.
 
 ## Secrets
 
-`HUBSPOT_TOKEN` and `SLACK_TOKEN` are read from environment variables
-(`api/_lib/hubspot.js`, `api/_lib/slack.js`) — never hardcode them. Locally they
+`HUBSPOT_TOKEN`, `SLACK_TOKEN` and the optional `SLACK_WEBHOOKS` are read from
+environment variables (`api/_lib/hubspot.js`, `api/_lib/slack.js`) — never hardcode
+them. Locally they
 live in `.env` (gitignored); in production they're set as Vercel project env vars
 (Production + Preview). See README.md's "Environment variables" section for scope
 requirements — in particular, the Slack token needs to be a proper bot token
 (`xoxb-...`) with `chat:write` scope for reliable long-term sending; personal user
-tokens can lack that scope or expire in hours.
+tokens can lack that scope or expire in hours. `SLACK_WEBHOOKS` is a JSON map of
+channel name (no `#`) → Slack incoming-webhook URL (see `.env.example`); it is not
+yet documented in README.md.
 
 ## Architecture
 
@@ -53,10 +56,12 @@ all global state and direct DOM manipulation):
   not just ones with a currently-overdue deal. Falls back to a static list if that
   fetch fails.
 - `config = {channels: {}, slack: {}}` — team→Slack-channel and
-  ownerId→Slack-handle mappings, persisted to `localStorage` (`loadConfig`/
-  `saveConfig`). This is per-browser; there's no shared backend store, so mapping
-  set on one machine won't show up on another.
-- `sendReminder(dealId, btn)` POSTs to `/api/remind`; `renderTable`/`getFiltered`/
+  ownerId→Slack-handle mappings, persisted to `localStorage` key `reminder_config`
+  (`loadConfig`/`saveConfig`). `loadConfig` back-fills any missing team from
+  `DEFAULT_CHANNELS`. This is per-browser; there's no shared backend store, so
+  mapping set on one machine won't show up on another.
+- `sendReminder(dealId, btn)` POSTs the whole deal object to `/api/remind`; bulk
+  send just calls it sequentially with a 400 ms gap. `renderTable`/`getFiltered`/
   `renderStats` handle search/filter/sort/rendering off the `deals` array.
 
 **Backend** (`api/*.js`, Vercel serverless functions, CommonJS, use the runtime's
@@ -70,16 +75,22 @@ global `fetch` — no dependencies):
   API returns that property as a plain `"YYYY-MM-DD"` string, but the Search API's
   `LT`/`GT` filters on it require the value as epoch-ms UTC midnight — passing the
   date string directly makes the search silently 400. Keep `STAGE_IDS`/
-  `STAGE_LABELS` in sync if pipeline stages change.
+  `STAGE_LABELS` in sync if pipeline stages change. Both HubSpot paginators (and
+  Slack's `users.list` lookup) stop after 10 pages.
 - `api/deals.js` — calls both `hubspot.js` functions, merges owner name/team onto
   each deal, computes `daysOver` server-side, returns `{items, total, syncedAt}`.
 - `api/owners.js` — returns the full owner list (`{id, name, team}`), sorted by
   team then name, for the Slack-mapping modal.
-- `api/_lib/slack.js` — `postToChannel(channel, text)` and `postDm(handle, text)`
-  wrap `chat.postMessage`. `resolveUserId` accepts a Slack member ID directly, or
+- `api/_lib/slack.js` — `postToChannel(channel, payload)` and
+  `postDm(handle, payload)`, where `payload` is `{text, blocks?}` (Block Kit).
+  `postToChannel` uses the incoming webhook from `SLACK_WEBHOOKS` if one exists for
+  that channel, otherwise `chat.postMessage` with `SLACK_TOKEN`. DMs always need the
+  token (webhooks can't DM). `resolveUserId` accepts a Slack member ID directly, or
   paginates `users.list` matching on username/display name/real name/email if
   given a handle or email instead.
-- `api/remind.js` — POST body `{deal, channel, ownerHandle}`; sends to whichever
+- `api/remind.js` — POST body `{deal, channel, ownerHandle}`; builds the message
+  text plus a "View deal in HubSpot" button (portal ID hardcoded as
+  `HUBSPOT_PORTAL_ID`); sends to whichever
   of `channel`/`ownerHandle` are present, collects per-target errors, and returns
   502 with a combined error message if any target failed (so a bad owner mapping
   doesn't block the channel post, or vice versa).
