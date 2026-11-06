@@ -232,7 +232,7 @@ tbody td{ padding: 12px 14px; vertical-align: middle; font-size: 13.5px; }
 .deal-name a:hover{ text-decoration:underline; }
 .deal-id{ font-family: var(--font-mono); font-size: 10.5px; color: var(--text-faint); margin-top:2px; }
 .badge{
-  display:inline-block; font-size: 11px; font-weight:600; padding: 3px 9px; border-radius: 100px;
+  display:inline-block; font-size: 11px; font-weight:600; padding: 3px 9px; border-radius: 100px; white-space:nowrap;
   font-family: var(--font);
 }
 .badge.stage-Demo{ background: var(--blue-dim); color: var(--blue); }
@@ -352,8 +352,67 @@ tbody td{ padding: 12px 14px; vertical-align: middle; font-size: 13.5px; }
 .toast.ok svg{ color: var(--green); }
 .toast.err svg{ color: var(--red); }
 
+/* ===== View switcher (Overdue / In pipeline) ===== */
+.view-switch{ margin-bottom:16px; }
+.view-switch .seg-pill{ display:inline-flex; align-items:center; gap:7px; }
+.view-switch .seg-count{
+  font-size:11px; font-weight:700; padding:1px 7px; border-radius:999px;
+  background: var(--card-2); color: var(--text-dim); border:1px solid var(--line);
+}
+.view-switch .seg-pill.active .seg-count{ background: rgba(255,255,255,.22); color:#fff; border-color: transparent; }
+.toolbar .segmented{ padding:3px; height:36px; align-items:center; }
+.toolbar .segmented .seg-pill{ padding:5px 12px; }
+
+/* ===== In-pipeline view ===== */
+.notice{
+  font-size:12.5px; color: var(--text-dim); background: var(--orange-dim); border:1px solid var(--orange);
+  border-radius: var(--radius-sm); padding:10px 12px; margin-bottom:12px;
+}
+.notice b{ color: var(--text); }
+.report-note{ font-size:12px; color: var(--text-faint); margin: -6px 0 12px 2px; }
+.report-note a{ color: var(--blue); text-decoration:none; }
+.report-note a:hover{ text-decoration:underline; }
+.pl-table td{ vertical-align: top; }
+.sub{ font-size:11.5px; color: var(--text-faint); margin-top:2px; }
+.chance{ display:inline-block; font-size:11px; font-weight:700; padding:3px 9px; border-radius:100px; white-space:nowrap; }
+.chance.c100{ background: var(--green-dim); color: var(--green); }
+.chance.c80{ background: var(--blue-dim); color: var(--blue); }
+.chips{ display:flex; flex-wrap:wrap; gap:4px; max-width:240px; }
+.chip{ font-size:10.5px; font-weight:600; padding:2px 7px; border-radius:6px; background: var(--card-2); border:1px solid var(--line); color: var(--text-dim); white-space:nowrap; }
+.chip.convo{ color:#AF52DE; border-color: rgba(175,82,222,.35); }
+.chip.studio{ color: var(--orange); border-color: rgba(255,149,0,.35); }
+.expand-btn{
+  font-family: var(--font); font-size:12px; font-weight:600; color: var(--blue); background: var(--blue-dim);
+  border:none; border-radius:999px; padding:5px 10px; cursor:pointer; display:inline-flex; align-items:center; gap:5px; white-space:nowrap;
+}
+.expand-btn svg{ width:11px; height:11px; transition: transform .15s; }
+.expand-btn.open svg{ transform: rotate(90deg); }
+.expand-btn:disabled{ background: var(--card-2); color: var(--text-faint); cursor:default; }
+tr.detail-row{ background: var(--card-2); }
+tr.detail-row:hover{ background: var(--card-2); }
+tr.detail-row > td{ padding: 4px 14px 16px 48px; }
+.detail-meta{ display:flex; flex-wrap:wrap; gap: 6px 22px; font-size:12.5px; color: var(--text-dim); padding: 10px 0 12px; }
+.detail-meta b{ color: var(--text); font-weight:600; }
+.rooftop-table{ width:100%; border-collapse:collapse; background: var(--card); border:1px solid var(--line); border-radius: var(--radius-sm); overflow:hidden; }
+.rooftop-table th{ font-size:10.5px; padding:8px 10px; background: var(--card); }
+.rooftop-table td{ font-size:12.5px; padding:8px 10px; border-top:1px solid var(--line); }
+.rooftop-table a{ color: var(--blue); text-decoration:none; }
+.rooftop-table a:hover{ text-decoration:underline; }
+.dim{ color: var(--text-faint); }
+.activity-fresh{ color: var(--green); font-weight:600; }
+.activity-stale{ color: var(--orange); font-weight:600; }
+.activity-cold{ color: var(--red); font-weight:600; }
+.pl-card-rooftops{ margin-top:10px; border-top:1px solid var(--line); padding-top:8px; display:none; }
+.pl-card-rooftops.open{ display:block; }
+.pl-card-rooftops div{ font-size:12px; padding:4px 0; color: var(--text-dim); }
+.pl-card-rooftops div b{ color: var(--text); font-weight:600; }
+
 @media (max-width: 720px){
   .stats{ grid-template-columns: repeat(2,1fr); }
+  .view-switch{ display:flex; width:100%; }
+  .view-switch .seg-pill{ flex:1; justify-content:center; }
+  .toolbar .segmented{ width:100%; }
+  .toolbar .segmented .seg-pill{ flex:1; }
   .table-wrap{ display:none; }
   .card-list{ display:flex; }
   .toolbar select, .toolbar .date-range{ width:100%; }
@@ -389,8 +448,8 @@ tbody td{ padding: 12px 14px; vertical-align: middle; font-size: 13.5px; }
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
       </div>
       <div>
-        <h1>Deal Reminder Dashboard</h1>
-        <p>Deals past their expected contract closure date, still sitting in an active pipeline stage.</p>
+        <h1 id="viewTitle">Deal Reminder Dashboard</h1>
+        <p id="viewSubtitle">Deals past their expected contract closure date, still sitting in an active pipeline stage.</p>
       </div>
     </div>
     <div class="header-meta">
@@ -399,6 +458,12 @@ tbody td{ padding: 12px 14px; vertical-align: middle; font-size: 13.5px; }
     </div>
   </div>
 
+  <div class="segmented view-switch" id="viewSwitch" role="tablist">
+    <button class="seg-pill active" data-view="overdue" role="tab">Overdue reminders <span class="seg-count" id="overdueCount">&ndash;</span></button>
+    <button class="seg-pill" data-view="pipeline" role="tab">In pipeline <span class="seg-count" id="pipelineCount">&ndash;</span></button>
+  </div>
+
+  <div id="viewOverdue">
   <div class="stats">
     <div class="stat" id="statTotalCard" title="Clear all filters">
       <div class="lbl">Overdue deals</div>
@@ -482,6 +547,105 @@ tbody td{ padding: 12px 14px; vertical-align: middle; font-size: 13.5px; }
     <span class="emoji">🎉</span>
     No overdue deals match this filter.
   </div>
+  </div><!-- /#viewOverdue -->
+
+  <div id="viewPipeline" style="display:none;">
+    <div class="report-note">Mirrors HubSpot report <a href="https://app-na2.hubspot.com/advanced-builder/242626590/report/508004491" target="_blank" rel="noopener">Deal Report &ndash; Convo</a>: closure chances 80&ndash;100%, Auto Pipeline stages, plus the product and rooftop-activity filters below. ARR is counted once per deal, not once per rooftop.</div>
+    <div class="notice" id="plNotice" style="display:none;"></div>
+
+    <div class="stats">
+      <div class="stat" id="plStatDealsCard" title="Clear all filters">
+        <div class="lbl">Deals in pipeline</div>
+        <div class="stat-icon" style="background:var(--blue-dim); color:var(--blue);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg>
+        </div>
+        <div class="num" id="plStatDeals">0</div>
+        <div class="cap" id="plStatDealsCap">&nbsp;</div>
+      </div>
+      <div class="stat" id="plStatArrCard">
+        <div class="lbl">Pipeline ARR (Sales)</div>
+        <div class="stat-icon" style="background:var(--green-dim); color:var(--green);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div class="num" id="plStatArr">$0</div>
+        <div class="cap" id="plStatArrCap">&nbsp;</div>
+      </div>
+      <div class="stat" id="plStatContractCard" title="Tap to filter Contract Initiated">
+        <div class="lbl">Contract initiated</div>
+        <div class="stat-icon" style="background:var(--orange-dim); color:var(--orange);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 15l2 2 4-4"/></svg>
+        </div>
+        <div class="num" id="plStatContract">0</div>
+        <div class="cap" id="plStatContractCap">&nbsp;</div>
+      </div>
+      <div class="stat" id="plStatRooftopsCard">
+        <div class="lbl">Rooftops covered</div>
+        <div class="stat-icon" style="background:rgba(175,82,222,.14); color:#AF52DE;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg>
+        </div>
+        <div class="num" id="plStatRooftops">0</div>
+        <div class="cap" id="plStatRooftopsCap">&nbsp;</div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="plSearch" placeholder="Search deal, rooftop, group, owner, DMS…">
+        <button class="search-clear" id="plSearchClear" type="button" aria-label="Clear search">&times;</button>
+      </div>
+      <div class="segmented" id="plProduct" title="Product interested in">
+        <button class="seg-pill active" data-product="convo">Convo</button>
+        <button class="seg-pill" data-product="studio">Studio</button>
+        <button class="seg-pill" data-product="">All</button>
+      </div>
+      <select id="plStage"><option value="">All stages</option></select>
+      <select id="plOwner"><option value="">All owners</option></select>
+      <select id="plActivity" title="Rooftop last activity">
+        <option value="report">Rooftop active since Sep 1, 2026 (report)</option>
+        <option value="30">Rooftop active in last 30 days</option>
+        <option value="60">Rooftop active in last 60 days</option>
+        <option value="90">Rooftop active in last 90 days</option>
+        <option value="">Any rooftop activity</option>
+      </select>
+      <select id="plSort">
+        <option value="activity_desc">Most recent rooftop activity</option>
+        <option value="arr_desc">Highest ARR (Sales) first</option>
+        <option value="arr_asc">Lowest ARR (Sales) first</option>
+        <option value="demo_desc">Latest demo first</option>
+        <option value="rooftops_desc">Most rooftops first</option>
+        <option value="name_asc">Deal name (A&ndash;Z)</option>
+      </select>
+      <button class="btn" id="plExport" title="Download as CSV, one row per deal × rooftop (same shape as the HubSpot report)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+        CSV
+      </button>
+    </div>
+
+    <div class="table-wrap">
+      <table class="pl-table">
+        <thead>
+          <tr>
+            <th>Deal</th>
+            <th>Stage</th>
+            <th>Owner</th>
+            <th>ARR (Sales)</th>
+            <th>Closure</th>
+            <th>Demo</th>
+            <th>Products (demo)</th>
+            <th>Rooftop activity</th>
+            <th>Rooftops</th>
+          </tr>
+        </thead>
+        <tbody id="plBody"></tbody>
+      </table>
+    </div>
+    <div class="card-list" id="plCards"></div>
+    <div class="empty" id="plEmpty" style="display:none;">
+      <span class="emoji">🔍</span>
+      <span id="plEmptyText">No in-pipeline deals match this filter.</span>
+    </div>
+  </div><!-- /#viewPipeline -->
 </div>
 
 <div class="bulk-bar" id="bulkBar">
@@ -723,6 +887,7 @@ function renderStats(){
   document.getElementById('statCrit').textContent = crit;
   document.getElementById('statWarn').textContent = warn;
   document.getElementById('statValue').textContent = fmtMoney(value);
+  document.getElementById('overdueCount').textContent = total;
   document.getElementById('statCritCard').classList.toggle('active', quickFilter === 'critical');
 
   document.getElementById('statTotalCap').textContent = total ? `${crit} critical · ${warn} warning` : ' ';
@@ -868,7 +1033,7 @@ function updateBulkBar(){
   const bar = document.getElementById('bulkBar');
   const count = selected.size;
   document.getElementById('bulkCount').textContent = count;
-  bar.classList.toggle('show', count > 0);
+  bar.classList.toggle('show', count > 0 && currentView === 'overdue');
 }
 
 function escapeHtml(s){
@@ -1068,8 +1233,8 @@ document.getElementById('bulkSendBtn').addEventListener('click', async () => {
 // ============================================================
 async function refreshFromHubspot(){
   const btn = document.getElementById('refreshBtn');
-  btn.disabled = true;
-  btn.classList.add('spinning');
+  const showSpin = currentView === 'overdue';
+  if(showSpin){ btn.disabled = true; btn.classList.add('spinning'); }
 
   try{
     const res = await fetch('/api/deals');
@@ -1077,8 +1242,8 @@ async function refreshFromHubspot(){
     if(!res.ok) throw new Error(data.error || ('Request failed (' + res.status + ')'));
 
     deals = data.items || [];
-    document.getElementById('syncedTime').textContent = new Date(data.syncedAt).toLocaleString('en-US', { month:'short', day:'2-digit', hour:'2-digit', minute:'2-digit' });
-    document.getElementById('syncedLabel').textContent = "Live pull from HubSpot · " + deals.length + " overdue deals";
+    overdueSyncedAt = data.syncedAt;
+    if(currentView === 'overdue') updateSyncedHeader(data.syncedAt);
     populateFilters();
     renderAll();
     return true;
@@ -1091,6 +1256,11 @@ async function refreshFromHubspot(){
   }
 }
 document.getElementById('refreshBtn').addEventListener('click', async () => {
+  if(currentView === 'pipeline'){
+    const ok = await refreshPipeline();
+    if(ok) toast('Refreshed: ' + pipelineDeals.length + ' in-pipeline deals pulled from HubSpot.');
+    return;
+  }
   const ok = await refreshFromHubspot();
   if(ok) toast('Refreshed: ' + deals.length + ' overdue deals pulled from HubSpot.');
 });
@@ -1106,6 +1276,378 @@ async function loadOwners(){
     populateFilters();
   }catch(e){ /* keep static fallback OWNERS/TEAMS */ }
 }
+
+// ============================================================
+// IN-PIPELINE VIEW — mirrors HubSpot report 508004491 ("Deal Report - Convo")
+// via /api/pipeline. One item per deal, with its companies (rooftops) nested.
+// ============================================================
+const HS_PORTAL = '242626590';
+const REPORT_ACTIVITY_AFTER = '2026-09-01'; // report filter: rooftop_last_activity IS_AFTER Sep 1 2026 (US/Eastern)
+let pipelineDeals = [];
+let pipelineLoaded = false;
+let pipelineLoading = null;
+let pipelineRooftopsError = null;
+let plProduct = 'convo';
+let plQuick = null;               // 'contract' when the Contract-initiated widget is tapped
+const plExpanded = new Set();     // deal ids whose rooftop panel is open
+
+const ICON_CHEVRON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>';
+
+function esc(v){ return escapeHtml(v == null ? '' : String(v)); }
+function etDate(iso){
+  // Calendar date in US/Eastern, matching the timezone the HubSpot report filters in.
+  return iso ? new Date(iso).toLocaleDateString('en-CA', { timeZone: 'America/New_York' }) : null;
+}
+function daysSince(iso){
+  return iso ? Math.floor((Date.now() - new Date(iso).getTime()) / 86400000) : null;
+}
+function activityHtml(iso){
+  if(!iso) return '<span class="dim">No activity</span>';
+  const d = daysSince(iso);
+  const cls = d <= 14 ? 'activity-fresh' : d <= 45 ? 'activity-stale' : 'activity-cold';
+  const rel = d <= 0 ? 'today' : d === 1 ? '1 day ago' : `${d} days ago`;
+  return `<div class="${cls}">${rel}</div><div class="sub">${fmtDate(etDate(iso))}</div>`;
+}
+function chanceHtml(c){
+  if(!c) return '<span class="dim">—</span>';
+  return `<span class="chance ${c === '100%' ? 'c100' : 'c80'}">${esc(c)}</span>`;
+}
+function chipsHtml(list){
+  if(!list || !list.length) return '<span class="dim">—</span>';
+  return '<div class="chips">' + list.map(p => {
+    const cls = /conv/i.test(p) ? 'convo' : /studio/i.test(p) ? 'studio' : '';
+    return `<span class="chip ${cls}">${esc(p)}</span>`;
+  }).join('') + '</div>';
+}
+function fmtMoneyOrDash(n){ return n == null ? '<span class="dim">—</span>' : fmtMoney(n); }
+function dealUrl(id){ return `https://app.hubspot.com/contacts/${HS_PORTAL}/record/0-3/${id}`; }
+function companyUrl(id){ return `https://app.hubspot.com/contacts/${HS_PORTAL}/record/0-2/${id}`; }
+
+function plActivityPasses(d){
+  if(pipelineRooftopsError) return true; // no rooftop data — can't apply this filter
+  const mode = document.getElementById('plActivity').value;
+  if(!mode) return true;
+  if(!d.lastActivity) return false;
+  if(mode === 'report') return etDate(d.lastActivity) > REPORT_ACTIVITY_AFTER;
+  return daysSince(d.lastActivity) <= Number(mode);
+}
+
+// Product + rooftop-activity are the report's "scope"; stage/owner/search/quick are drill-downs.
+function plScoped(){
+  return pipelineDeals.filter(d => (!plProduct || d.product === plProduct) && plActivityPasses(d));
+}
+
+function plFiltered(){
+  const q = document.getElementById('plSearch').value.trim().toLowerCase();
+  const stage = document.getElementById('plStage').value;
+  const owner = document.getElementById('plOwner').value;
+  const sort = document.getElementById('plSort').value;
+
+  const list = plScoped().filter(d => {
+    if(stage && d.stage !== stage) return false;
+    if(owner && String(d.ownerId) !== owner) return false;
+    if(plQuick === 'contract' && d.stage !== 'Contract Initiated') return false;
+    if(q){
+      const hay = [d.name, d.owner, d.salesOwner, d.team, d.group, d.enterpriseId,
+        ...d.rooftops.flatMap(r => [r.name, r.domain, r.orgName, r.gdName, r.dms, r.ims, r.crm])]
+        .filter(Boolean).join(' ').toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  list.sort((a,b) => {
+    if(sort === 'arr_desc') return (b.arr||0) - (a.arr||0);
+    if(sort === 'arr_asc') return (a.arr||0) - (b.arr||0);
+    if(sort === 'demo_desc') return (b.demoCompleted||b.demoScheduled||'').localeCompare(a.demoCompleted||a.demoScheduled||'');
+    if(sort === 'rooftops_desc') return b.rooftops.length - a.rooftops.length;
+    if(sort === 'name_asc') return a.name.localeCompare(b.name);
+    return (b.lastActivity||'').localeCompare(a.lastActivity||'');
+  });
+  return list;
+}
+
+function populatePipelineFilters(){
+  const stageSel = document.getElementById('plStage');
+  const prevStage = stageSel.value;
+  stageSel.innerHTML = '<option value="">All stages</option>';
+  STAGE_ORDER.forEach(s => { const o=document.createElement('option'); o.value=s; o.textContent=s; stageSel.appendChild(o); });
+  stageSel.value = prevStage;
+
+  const ownerSel = document.getElementById('plOwner');
+  const prevOwner = ownerSel.value;
+  const map = new Map();
+  pipelineDeals.forEach(d => { if(d.ownerId != null && !map.has(d.ownerId)) map.set(d.ownerId, d.owner); });
+  ownerSel.innerHTML = '<option value="">All owners</option>';
+  [...map.entries()].sort((a,b) => a[1].localeCompare(b[1])).forEach(([id,name]) => {
+    const o=document.createElement('option'); o.value=id; o.textContent=name; ownerSel.appendChild(o);
+  });
+  if([...ownerSel.options].some(o => o.value === prevOwner)) ownerSel.value = prevOwner;
+}
+
+function renderPipelineStats(){
+  const scoped = plScoped();
+  const total = scoped.length;
+  const arr = scoped.reduce((s,d) => s + (d.arr||0), 0);
+  const contract = scoped.filter(d => d.stage === 'Contract Initiated');
+  const contractArr = contract.reduce((s,d) => s + (d.arr||0), 0);
+  const rooftopIds = new Set(scoped.flatMap(d => d.rooftops.map(r => r.id)));
+  const groups = new Set(scoped.map(d => d.group).filter(Boolean));
+  const full = scoped.filter(d => d.closureChances === '100%').length;
+
+  document.getElementById('plStatDeals').textContent = total;
+  document.getElementById('plStatDealsCap').textContent = total ? `${full} at 100% · ${total-full} at 80–100%` : ' ';
+  document.getElementById('plStatArr').textContent = fmtMoney(arr);
+  document.getElementById('plStatArrCap').textContent = total ? `avg ${fmtMoney(arr/total)}/deal` : ' ';
+  document.getElementById('plStatContract').textContent = contract.length;
+  document.getElementById('plStatContractCap').textContent = contract.length ? `${fmtMoney(contractArr)} ARR (Sales)` : ' ';
+  document.getElementById('plStatContractCard').classList.toggle('active', plQuick === 'contract');
+  document.getElementById('plStatRooftops').textContent = pipelineRooftopsError ? '—' : rooftopIds.size;
+  document.getElementById('plStatRooftopsCap').textContent = pipelineRooftopsError ? 'company data unavailable' : (groups.size ? `across ${groups.size} dealer group${groups.size>1?'s':''}` : ' ');
+  document.getElementById('pipelineCount').textContent = pipelineLoaded ? total : '–';
+}
+
+function dealDetailHtml(d){
+  const meta = [
+    ['Sales owner', d.salesOwner], ['Region', d.region], ['Enterprise ID', d.enterpriseId],
+    ['Dealer group', d.group], ['Expected close', d.expected && fmtDate(d.expected)],
+    ['Demo scheduled', d.demoScheduled && fmtDate(d.demoScheduled)], ['Demo completed', d.demoCompleted && fmtDate(d.demoCompleted)],
+    ['Contract closed on', d.contractClosedOn && fmtDate(d.contractClosedOn)], ['Contracted ARR', d.contractedArr != null ? fmtMoney(d.contractedArr) : null],
+    ['Product pitched', d.productsPitched.join(', ')], ['Contract closed for', d.contractProducts.join(', ')],
+  ].map(([k,v]) => `<span>${k}: <b>${v ? esc(v) : '—'}</b></span>`).join('');
+
+  const rows = d.rooftops.map(r => `
+    <tr>
+      <td><a href="${companyUrl(r.id)}" target="_blank" rel="noopener">${esc(r.name)}</a>${r.domain ? `<div class="sub">${esc(r.domain)}</div>` : ''}</td>
+      <td>${esc(r.dms) || '<span class="dim">—</span>'}</td>
+      <td>${esc(r.ims) || '<span class="dim">—</span>'}</td>
+      <td>${esc(r.crm) || '<span class="dim">—</span>'}</td>
+      <td>${esc(r.serviceScheduler) || '<span class="dim">—</span>'}</td>
+      <td>${esc(r.orgName || r.gdName) || '<span class="dim">—</span>'}</td>
+      <td>${activityHtml(r.lastActivity)}</td>
+    </tr>`).join('');
+
+  const table = d.rooftops.length ? `
+    <table class="rooftop-table">
+      <thead><tr><th>Rooftop</th><th>DMS name</th><th>IMS</th><th>CRM</th><th>Service scheduler</th><th>Org / group</th><th>Last activity</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>` : '<div class="dim" style="font-size:12.5px;">No associated companies.</div>';
+  return `<div class="detail-meta">${meta}</div>${table}`;
+}
+
+function renderPipeline(){
+  renderPipelineStats();
+  const list = plFiltered();
+  const tbody = document.getElementById('plBody');
+  const empty = document.getElementById('plEmpty');
+  tbody.innerHTML = '';
+  empty.style.display = list.length ? 'none' : 'block';
+  document.getElementById('plEmptyText').textContent = pipelineLoaded
+    ? 'No in-pipeline deals match this filter.'
+    : 'Loading in-pipeline deals from HubSpot…';
+
+  list.forEach(d => {
+    const open = plExpanded.has(d.id);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>
+        <div class="deal-name"><a href="${dealUrl(d.id)}" target="_blank" rel="noopener">${esc(d.name)}</a></div>
+        <div class="deal-id">#${d.id}${d.group ? ' · ' + esc(d.group) : ''}</div>
+      </td>
+      <td><span class="badge ${stageClass(d.stage)}">${esc(d.stage)}</span></td>
+      <td>
+        <div class="owner-cell">
+          ${avatarHtml(d.owner)}
+          <div><div>${esc(d.owner)}</div><div class="team">${d.salesOwner && d.salesOwner !== d.owner ? 'AE: ' + esc(d.salesOwner) : esc(d.team)}</div></div>
+        </div>
+      </td>
+      <td class="amount">${fmtMoneyOrDash(d.arr)}${d.contractedArr != null ? `<div class="sub">Contracted ${fmtMoney(d.contractedArr)}</div>` : ''}</td>
+      <td>${chanceHtml(d.closureChances)}</td>
+      <td class="date-cell">${d.demoCompleted ? 'Done ' + fmtDate(d.demoCompleted) : d.demoScheduled ? 'Sched. ' + fmtDate(d.demoScheduled) : '—'}</td>
+      <td>${chipsHtml(d.demoProducts.length ? d.demoProducts : d.productsPitched)}</td>
+      <td class="date-cell">${pipelineRooftopsError ? '<span class="dim">—</span>' : activityHtml(d.lastActivity)}</td>
+      <td><button class="expand-btn ${open ? 'open' : ''}" data-id="${d.id}">${ICON_CHEVRON} ${d.rooftops.length} rooftop${d.rooftops.length===1?'':'s'}</button></td>
+    `;
+    tbody.appendChild(tr);
+    if(open){
+      const dr = document.createElement('tr');
+      dr.className = 'detail-row';
+      dr.innerHTML = `<td colspan="9">${dealDetailHtml(d)}</td>`;
+      tbody.appendChild(dr);
+    }
+  });
+
+  tbody.querySelectorAll('.expand-btn').forEach(btn => btn.addEventListener('click', () => {
+    const id = Number(btn.dataset.id);
+    if(plExpanded.has(id)) plExpanded.delete(id); else plExpanded.add(id);
+    renderPipeline();
+  }));
+
+  renderPipelineCards(list);
+}
+
+function renderPipelineCards(list){
+  const wrap = document.getElementById('plCards');
+  wrap.innerHTML = '';
+  list.forEach(d => {
+    const card = document.createElement('div');
+    card.className = 'deal-card';
+    const rooftops = d.rooftops.map(r =>
+      `<div><b>${esc(r.name)}</b>${r.dms ? ' · ' + esc(r.dms) : ''}${r.lastActivity ? ' · ' + fmtDate(etDate(r.lastActivity)) : ''}</div>`).join('');
+    card.innerHTML = `
+      <div class="deal-card-content">
+        <div class="deal-card-top">
+          <div>
+            <div class="deal-card-name"><a href="${dealUrl(d.id)}" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">${esc(d.name)}</a></div>
+            <div class="deal-card-id">#${d.id}${d.group ? ' · ' + esc(d.group) : ''}</div>
+          </div>
+          <span class="badge ${stageClass(d.stage)}">${esc(d.stage)}</span>
+        </div>
+        <div class="deal-card-mid" style="display:flex; align-items:center; gap:7px;">${avatarHtml(d.owner)}<span>${esc(d.owner)}${d.salesOwner && d.salesOwner !== d.owner ? ' · AE ' + esc(d.salesOwner) : ''}</span></div>
+        <div class="deal-card-bottom">
+          <span class="amount">${d.arr != null ? fmtMoney(d.arr) : '—'}</span>
+          ${chanceHtml(d.closureChances)}
+        </div>
+        <div class="deal-card-bottom" style="margin-top:8px;">
+          <span class="date-cell">${d.lastActivity ? 'Active ' + fmtDate(etDate(d.lastActivity)) : 'No rooftop activity'}</span>
+          <button class="expand-btn" data-id="${d.id}" ${d.rooftops.length ? '' : 'disabled'}>${ICON_CHEVRON} ${d.rooftops.length} rooftop${d.rooftops.length===1?'':'s'}</button>
+        </div>
+        <div class="pl-card-rooftops">${rooftops}</div>
+      </div>`;
+    wrap.appendChild(card);
+  });
+  wrap.querySelectorAll('.expand-btn').forEach(btn => btn.addEventListener('click', () => {
+    btn.classList.toggle('open');
+    btn.closest('.deal-card-content').querySelector('.pl-card-rooftops').classList.toggle('open');
+  }));
+}
+
+async function refreshPipeline(){
+  if(pipelineLoading) return pipelineLoading;
+  const btn = document.getElementById('refreshBtn');
+  pipelineLoading = (async () => {
+    if(currentView === 'pipeline'){ btn.disabled = true; btn.classList.add('spinning'); }
+    try{
+      const res = await fetch('/api/pipeline');
+      const data = await res.json();
+      if(!res.ok) throw new Error(data.error || ('Request failed (' + res.status + ')'));
+      pipelineDeals = data.items || [];
+      pipelineRooftopsError = data.rooftopsError || null;
+      pipelineLoaded = true;
+      const notice = document.getElementById('plNotice');
+      notice.style.display = pipelineRooftopsError ? 'block' : 'none';
+      notice.innerHTML = pipelineRooftopsError
+        ? `<b>Rooftop details unavailable.</b> The HubSpot token likely needs the <b>crm.objects.companies.read</b> scope, so the rooftop-activity filter is off. (${esc(pipelineRooftopsError).slice(0,160)})`
+        : '';
+      if(currentView === 'pipeline') updateSyncedHeader(data.syncedAt);
+      populatePipelineFilters();
+      renderPipeline();
+      return true;
+    }catch(err){
+      toast('In-pipeline refresh failed: ' + err.message, 'err');
+      renderPipeline();
+      return false;
+    }finally{
+      btn.disabled = false; btn.classList.remove('spinning');
+      pipelineLoading = null;
+    }
+  })();
+  return pipelineLoading;
+}
+let pipelineSyncedAt = null;
+
+function exportPipelineCsv(){
+  const list = plFiltered();
+  const cols = ['Deal ID','Deal Name','Deal Stage','Deal owner','Sales Owner','ARR (Sales)','Contracted ARR','Closure Chances',
+    'Demo Scheduled for Date','Demo Completed Date','Contract Closed On','Expected Contract Closure Date','Enterprise ID','Region',
+    'Product interested in','Demo Scheduled for which Product(s)?','Product Pitched (Old)','Contract Closed for which Product(s)?',
+    'Company ID','Company name','Company Domain Name','Org Name','GD Name','DMS Name','IMS','CRM Platform','Service Scheduler','Rooftop Last Activity'];
+  const q = v => { const s = v == null ? '' : String(v); return /[",\n]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s; };
+  const lines = [cols.join(',')];
+  list.forEach(d => {
+    const base = [d.id, d.name, d.stage, d.owner, d.salesOwner, d.arr, d.contractedArr, d.closureChances,
+      d.demoScheduled, d.demoCompleted, d.contractClosedOn, d.expected, d.enterpriseId, d.region, d.product,
+      d.demoProducts.join('; '), d.productsPitched.join('; '), d.contractProducts.join('; ')];
+    const rooftops = d.rooftops.length ? d.rooftops : [null];
+    rooftops.forEach(r => lines.push([...base,
+      r && r.id, r && r.name, r && r.domain, r && r.orgName, r && r.gdName, r && r.dms, r && r.ims, r && r.crm,
+      r && r.serviceScheduler, r && etDate(r.lastActivity)].map(q).join(',')));
+  });
+  const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `in-pipeline-deals-${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+// ============================================================
+// VIEW SWITCHING (Overdue reminders / In pipeline)
+// ============================================================
+const VIEW_META = {
+  overdue: { title: 'Deal Reminder Dashboard', subtitle: 'Deals past their expected contract closure date, still sitting in an active pipeline stage.' },
+  pipeline: { title: 'In-Pipeline Deals', subtitle: 'High-confidence deals (80–100% closure chance) in the Auto Pipeline, with every rooftop on the deal and its last activity.' },
+};
+let currentView = 'overdue';
+let overdueSyncedAt = null;
+
+function updateSyncedHeader(iso){
+  if(currentView === 'pipeline') pipelineSyncedAt = iso || pipelineSyncedAt; else overdueSyncedAt = iso || overdueSyncedAt;
+  const at = currentView === 'pipeline' ? pipelineSyncedAt : overdueSyncedAt;
+  document.getElementById('syncedTime').textContent = at
+    ? new Date(at).toLocaleString('en-US', { month:'short', day:'2-digit', hour:'2-digit', minute:'2-digit' })
+    : '—';
+  document.getElementById('syncedLabel').textContent = currentView === 'pipeline'
+    ? (pipelineLoaded ? `Live pull from HubSpot · ${pipelineDeals.length} deals at 80–100%` : 'Loading from HubSpot…')
+    : (at ? `Live pull from HubSpot · ${deals.length} overdue deals` : 'Loaded from last HubSpot pull');
+}
+
+function setView(view){
+  currentView = view === 'pipeline' ? 'pipeline' : 'overdue';
+  try{ localStorage.setItem('active_view', currentView); }catch(e){}
+  if(location.hash !== '#' + currentView) history.replaceState(null, '', '#' + currentView);
+  document.getElementById('viewOverdue').style.display = currentView === 'overdue' ? '' : 'none';
+  document.getElementById('viewPipeline').style.display = currentView === 'pipeline' ? '' : 'none';
+  document.querySelectorAll('#viewSwitch .seg-pill').forEach(b => b.classList.toggle('active', b.dataset.view === currentView));
+  document.getElementById('viewTitle').textContent = VIEW_META[currentView].title;
+  document.getElementById('viewSubtitle').textContent = VIEW_META[currentView].subtitle;
+  updateBulkBar();
+  updateSyncedHeader();
+  if(currentView === 'pipeline'){
+    renderPipeline();
+    if(!pipelineLoaded) refreshPipeline();
+  }
+}
+
+document.querySelectorAll('#viewSwitch .seg-pill').forEach(b => b.addEventListener('click', () => setView(b.dataset.view)));
+document.querySelectorAll('#plProduct .seg-pill').forEach(b => b.addEventListener('click', () => {
+  plProduct = b.dataset.product;
+  document.querySelectorAll('#plProduct .seg-pill').forEach(x => x.classList.toggle('active', x === b));
+  renderPipeline();
+}));
+['plStage','plOwner','plActivity','plSort'].forEach(id => document.getElementById(id).addEventListener('change', renderPipeline));
+document.getElementById('plSearch').addEventListener('input', e => {
+  e.target.closest('.search-bar').classList.toggle('has-value', !!e.target.value);
+  renderPipeline();
+});
+document.getElementById('plSearchClear').addEventListener('click', () => {
+  const inp = document.getElementById('plSearch');
+  inp.value = ''; inp.closest('.search-bar').classList.remove('has-value');
+  renderPipeline(); inp.focus();
+});
+document.getElementById('plStatDealsCard').addEventListener('click', () => {
+  const inp = document.getElementById('plSearch');
+  inp.value = ''; inp.closest('.search-bar').classList.remove('has-value');
+  document.getElementById('plStage').value = '';
+  document.getElementById('plOwner').value = '';
+  plQuick = null;
+  renderPipeline();
+});
+document.getElementById('plStatContractCard').addEventListener('click', () => {
+  plQuick = plQuick === 'contract' ? null : 'contract';
+  renderPipeline();
+});
+document.getElementById('plExport').addEventListener('click', exportPipelineCsv);
 
 // ============================================================
 // INIT
@@ -1139,7 +1681,11 @@ document.querySelectorAll('th.sortable').forEach(th => {
   populateFilters();
   loadConfig();
   renderAll();
-  await Promise.all([loadOwners(), refreshFromHubspot()]);
+  let startView = (location.hash || '').replace('#','');
+  if(!startView){ try{ startView = localStorage.getItem('active_view') || 'overdue'; }catch(e){ startView = 'overdue'; } }
+  setView(startView);
+  // Load both views' data so the tab counts are filled in; the active one shows the spinner.
+  await Promise.all([loadOwners(), refreshFromHubspot(), refreshPipeline()]);
 })();
 </script>
 </body>

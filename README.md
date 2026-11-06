@@ -18,6 +18,13 @@ https://deal-reminder-dashboard.vercel.app
 - Bulk select + send for multiple deals at once.
 - "Refresh from HubSpot" re-pulls the live overdue list (also runs automatically
   on page load).
+- **In pipeline** tab: mirrors the HubSpot report
+  [Deal Report – Convo](https://app-na2.hubspot.com/advanced-builder/242626590/report/508004491)
+  — deals at 80–100% closure chance in the same four stages, one row per deal with
+  its rooftops (associated companies: DMS, IMS, CRM, service scheduler, last
+  activity) expandable underneath. Product (Convo / Studio / All) and rooftop
+  last-activity filters default to the report's settings; CSV export produces the
+  report's deal × rooftop row shape.
 - Owner → Slack handle and Team → Slack channel mappings are configured once via
   the **Slack mapping** panel and persisted in the browser (`localStorage`).
 
@@ -26,7 +33,7 @@ https://deal-reminder-dashboard.vercel.app
 - `public/index.html` — the frontend: static HTML/CSS/JS, no build step, no
   framework. Ships with an embedded snapshot of deals for instant first paint,
   then calls `/api/deals` and `/api/owners` on load to replace it with live data.
-- `api/deals.js`, `api/owners.js`, `api/remind.js` — Vercel serverless functions
+- `api/deals.js`, `api/pipeline.js`, `api/owners.js`, `api/remind.js` — Vercel serverless functions
   that talk to HubSpot and Slack directly using server-side tokens. The browser
   never sees the HubSpot or Slack credentials.
 - `api/_lib/hubspot.js`, `api/_lib/slack.js` — shared HubSpot/Slack API helpers.
@@ -45,7 +52,7 @@ vercel dev
 
 | Variable | Purpose |
 |---|---|
-| `HUBSPOT_TOKEN` | HubSpot private app token (needs `crm.objects.deals.read` and `crm.objects.owners.read`) |
+| `HUBSPOT_TOKEN` | HubSpot private app token (needs `crm.objects.deals.read`, `crm.objects.owners.read`, and `crm.objects.companies.read` for the In-pipeline rooftop details) |
 | `SLACK_TOKEN` | Slack token used for `chat.postMessage` / `users.list`. Should be a Bot User OAuth token (`xoxb-...`) with `chat:write` scope for production use — see note below. |
 
 Set these in the Vercel project's environment variables (Production + Preview),
